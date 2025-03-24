@@ -149,7 +149,7 @@ const int Z_pin = A0; // new added const
 
 const unsigned long timeStart = micros(); // ? not needed
 // const unsigned long delayLEDon = 4000; // delay LED on from when Fig stopped talking
-int delayLEDon = 950;
+unsigned long delayLEDon = 950;
 unsigned long timeFigStartedTalking[7];
 
 const int dimmingSteps = 20;      // Number of steps for dimming
