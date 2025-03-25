@@ -198,7 +198,6 @@ void loop()
   {
     // Read the photoresistor for this figure
     int photoVal = readMux(i);
-    //  const unsigned long timeRead = millis();  // todo remove should not be const
     unsigned long timeRead = millis();
 
     switch (figState[i])
@@ -231,7 +230,6 @@ void loop()
       dimmingStartTime[i] = timeRead; // Start dimming
 
       {
-
         break;
 
       case 2: //  case 2 On, not talking  , dimming
@@ -278,50 +276,48 @@ void loop()
     }
 
   } // end loop
-
 }
 
-  // read the photoresistor for a
-  int readMux(int channel)
+// read the photoresistor for a
+int readMux(int channel)
+{
+  int controlPin[] = {s0, s1, s2};
+
+  //?  can this be made global so that it does not have to be created every time thru loop
+  //?  is it really created every time thru??
+  // todo make it static
+  const int muxChannel[8][3] = {
+      {0, 0, 0}, // channel 0
+      {1, 0, 0}, // channel 1
+      {0, 1, 0}, // channel 2
+      {1, 1, 0}, // channel 3
+      {0, 0, 1}, // channel 4
+      {1, 0, 1}, // channel 5
+      {0, 1, 1}, // channel 6
+      {1, 1, 1}, // channel 7
+  };
+
+  // loop through the 3 signal pins
+  for (int i = 0; i < 3; i++)
   {
-    int controlPin[] = {s0, s1, s2};
-
-    //?  can this be made global so that it does not have to be created every time thru loop
-    //?  is it really created every time thru??
-    // todo make it static
-    const int muxChannel[8][3] = {
-        {0, 0, 0}, // channel 0
-        {1, 0, 0}, // channel 1
-        {0, 1, 0}, // channel 2
-        {1, 1, 0}, // channel 3
-        {0, 0, 1}, // channel 4
-        {1, 0, 1}, // channel 5
-        {0, 1, 1}, // channel 6
-        {1, 1, 1}, // channel 7
-    };
-
-    // loop through the 3 signal pins
-    for (int i = 0; i < 3; i++)
-    {
-      // todo  change to bit banging
-      digitalWrite(controlPin[i], muxChannel[channel][i]);
-    }
-
     // todo  change to bit banging
-    // int readVal = 0;
-    int readVal = analogRead(Z_pin);
-
-    return readVal;
+    digitalWrite(controlPin[i], muxChannel[channel][i]);
   }
 
+  // todo  change to bit banging
+  // int readVal = 0;
+  int readVal = analogRead(Z_pin);
 
-    // Function to set all LEDs off
-    void clearLEDs()
-    {
-      // Cycle through all LEDs
-      for (int i = 0; i < ledNum; i++)
-      {
-        // Set color to zero which is off
-        ledStrip.setPixelColor(i, 0);
-      }
-    }
+  return readVal;
+}
+
+// Function to set all LEDs off
+void clearLEDs()
+{
+  // Cycle through all LEDs for figure in loop
+  for (int i = 0; i < ledNum; i++)
+  {
+    // Set color to zero which is off
+    ledStrip.setPixelColor(i, 0);
+  }
+}
