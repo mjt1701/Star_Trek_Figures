@@ -77,6 +77,9 @@
 
   Rev 1.2   Moved to VS Code / PlatfomrIO source control, added adafruit neopixel lib to project
 
+  Rev 1.20  branch - refactor switch case to enum; created state diagram. 
+
+
 */
 
 // Include Adafruit NeoPixel Library
@@ -109,7 +112,19 @@ const int talkingMin[7] = {
 //  0       Off  or init
 //  1       On, still talking
 //  2       On, not talking, lights still on
-int figState[] = {0, 0, 0, 0, 0, 0, 0};
+
+enum figStates 
+{
+  LED_OFF,        //  Setup any initial conditions first time thru
+  LED_TURN_ON,    //  Figure started talking
+  LED_KEEP_ON,    //  Figure continue to talk
+  LED_DIMMING    //  Figure stopped talking, led dimming
+                 //  Figure still not taking, long enough for Led to go off
+};
+
+//  int figState[] = {0, 0, 0, 0, 0, 0, 0};
+enum figStates figState[7];
+
 
 // color palette for each fig cell
 const int figColor[7][4] = {
@@ -202,21 +217,21 @@ void loop()
 
     switch (figState[i])
     {
-    case 0: // Off not talking
+    case LED_OFF: // Off not talking
 
       if (photoVal > talkingMin[i]) // If figure started talking, turn on the color and note the time
       {
         timeFigStartedTalking[i] = timeRead;
-        figState[i] = 1; // now talking
+        figState[i] = LED_TURN_ON; // now talking
 
         ledStrip.fill(ledStrip.Color(figColor[i][0], figColor[i][1], figColor[i][2], figColor[i][3]), i * ledInGroup, ledInGroup);
         ledStrip.show(); //
       }
       break;
 
-    case 1: // case 1 On,  talking
+    case LED_TURN_ON: // case 1 On,  talking
 
-      if (photoVal > talkingMin[i]) //  is figure is still talking
+      if (photoVal > talkingMin[i]) //  is figure is still talking  
       {
         timeFigStartedTalking[i] = timeRead; //  reset begin timer countdown for turning off light
         // todo does state need updated?  dont think so, still talking is still talking
@@ -224,7 +239,7 @@ void loop()
       }
 
       else //  figure has stopped talking (LED still on)
-        figState[i] = 2;
+        figState[i] = LED_DIMMING;
 
       dimmingStep[i] = 0;             // Reset dimming step
       dimmingStartTime[i] = timeRead; // Start dimming
@@ -232,7 +247,7 @@ void loop()
       {
         break;
 
-      case 2: //  case 2 On, not talking  , dimming
+      case LED_DIMMING: //  case 2 On, not talking  , dimming
 
         if (timeRead - timeFigStartedTalking[i] < delayLEDon)
         {
@@ -264,7 +279,7 @@ void loop()
           {
             // Turn off the lights when dimming is complete
             ledStrip.fill(ledStrip.Color(0, 0, 0, 0), i * ledInGroup, ledInGroup);
-            figState[i] = 0; // Reset to off state
+            figState[i] = LED_OFF; // Reset to off state
           }
         }
         break;
