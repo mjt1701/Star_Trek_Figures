@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-// Star Trek Project
+// Star Trek Figures Project
 //
 //  My Matt Troha
 
@@ -24,10 +24,10 @@ const int TALKING_MIN[7] = {
 enum figStates
 {
   LED_OFF_NOT_TALKING,     //  Setup any initial conditions first time thru
-  LED_ON,      //  Figure started talking
-  LED_KEEP_ON, //  Figure continue to talk
-  LED_DIMMING  //  Figure stopped talking, led dimming
-               //  Figure still not taking, long enough for Led to go off
+  LED_ON_TALKING,      //  Figure started talking
+  LED_KEEP_ON,        //  Figure stay lit for a bit after stop talking
+  LED_DIMMING         //  Figure stopped talking, led dimming
+                        //  all Figures not taking long enough that prettly lights start ; maybe will need additianal states for tbat
 };
 
 //  int figState[] = {0, 0, 0, 0, 0, 0, 0};
@@ -43,9 +43,6 @@ const int FIGURE_COLOR[7][4] = {
     {0, 0, 122, 122}, // Figure 5 blue
     {76, 46, 0, 122}  // Figure 6 gold
 };
-
-//  brighness factor for each fig cell // ! the number in the table must be divided also
-int figBrightFactor[] = {100, 100, 100, 100, 100, 100, 100}; // ? not needed
 
 // factor to reduce brightness each loop when dimming
 const int reduceFactor = 20; // in percentage  // ? not needed
@@ -98,6 +95,7 @@ void setup()
   clearLEDs();
   // Show the result of clearing the LEDs
   ledStrip.show();
+  // todo add a simple LED flash to indicated the figures got the word to start
 
   // Initialize the photoresistor address pins
   pinMode(S0, OUTPUT);
@@ -125,18 +123,9 @@ void loop()
     {
     case LED_OFF_NOT_TALKING: 
     isFigureNowTalking( i, photoVal, timeRead);
-    /*
-      if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
-      {
-        lastKnownTalkingTime[i] = timeRead;
-        figState[i] = LED_ON; // now talking
-        ledStrip.fill(ledStrip.Color(FIGURE_COLOR[i][0], FIGURE_COLOR[i][1], FIGURE_COLOR[i][2], FIGURE_COLOR[i][3]), i * LED_IN_GROUP, LED_IN_GROUP);
-        ledStrip.show(); //
-      }
-      */
       break;
 
-    case LED_ON: //  On,  talking
+    case LED_ON_TALKING: //  On,  talking
 
       if (photoVal > TALKING_MIN[i]) //  is figure is still talking
       {
@@ -153,16 +142,6 @@ void loop()
 // todo need to see if figure started talking again
 isFigureNowTalking( i, photoVal, timeRead);
 
-/*
-if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
-{
-  lastKnownTalkingTime[i] = timeRead;
-  figState[i] = LED_ON; // now talking
-  ledStrip.fill(ledStrip.Color(FIGURE_COLOR[i][0], FIGURE_COLOR[i][1], FIGURE_COLOR[i][2], FIGURE_COLOR[i][3]), i * LED_IN_GROUP, LED_IN_GROUP);
-  ledStrip.show(); //
-}
-  */
-
       if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
       {
         // Still in the delay period, do nothing
@@ -175,20 +154,9 @@ if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color a
       }
 
     case LED_DIMMING: //  On, not talking  , dimming
-// TODO  need to see if figure started talking again
 isFigureNowTalking( i, photoVal, timeRead);
 
-
-/*
-if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
-{
-  lastKnownTalkingTime[i] = timeRead;
-  figState[i] = LED_ON; // now talking
-  ledStrip.fill(ledStrip.Color(FIGURE_COLOR[i][0], FIGURE_COLOR[i][1], FIGURE_COLOR[i][2], FIGURE_COLOR[i][3]), i * LED_IN_GROUP, LED_IN_GROUP);
-  ledStrip.show(); //
-}
-*/
-      if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
+      if (timeRead - lastKnownTalkingTime[i] < delayLEDon)   // todo  is this needed??? taken care of just above??
       {
         // Still in the delay period, do nothing
       }
@@ -204,7 +172,7 @@ if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color a
                             FIGURE_COLOR[i][1] * brightness / 255,
                             FIGURE_COLOR[i][2] * brightness / 255,
                             FIGURE_COLOR[i][3] * brightness / 255),
-                        i * LED_IN_GROUP, LED_IN_GROUP);
+                            i * LED_IN_GROUP, LED_IN_GROUP);
           ledStrip.show();
 
           // Check if it's time to move to the next dimming step
@@ -231,15 +199,14 @@ if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color a
 
 } // end loop
 
-
 // read the photoresistor for a
 int readMux(int channel)
 {
   int controlPin[] = {S0, S1, S2};
 
   //?  can this be made global so that it does not have to be created every time thru loop
-  //?  is it really created every time thru??
-  // todo make it static const
+  //?  is it really created every time thru??   
+  // todo make it static const  ;;  MAKE it part of the figure object
   const int muxChannel[8][3] = {
       {0, 0, 0}, // channel 0
       {1, 0, 0}, // channel 1
@@ -254,12 +221,11 @@ int readMux(int channel)
   // loop through the 3 signal pins
   for (int i = 0; i < 3; i++)
   {
-    // todo  change to bit banging
+    // todo  change to bit banging  / dont need to now
     digitalWrite(controlPin[i], muxChannel[channel][i]);
   }
 
-  // todo  change to bit banging
-  // int readVal = 0;
+  // todo  change to bit banging / dont need to now
   int readVal = analogRead(Z_PIN);
 
   return readVal;
@@ -286,7 +252,7 @@ void  isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead
                                  FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]), 
                                  inChannel * LED_IN_GROUP, LED_IN_GROUP);
     ledStrip.show(); //
-     figState[inChannel] = LED_ON; // now talking
+     figState[inChannel] = LED_ON_TALKING; // now talking
   }
   
 }
