@@ -76,7 +76,7 @@ const int Z_PIN = A0;
 
 // const unsigned long timeStart = micros(); // ? not needed
 // const unsigned long delayLEDon = 4000; // delay LED on from when Fig stopped talking
-unsigned long delayLEDon = 950;
+unsigned long delayLEDon = 950;  //time that led stays on after figure stops talking
 unsigned long lastKnownTalkingTime[7];
 
 const int dimmingSteps = 20;      // Number of steps for dimming
