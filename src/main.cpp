@@ -28,7 +28,7 @@ const int TALKING_MIN[7] = {
 
 enum figStates
 {
-  LED_OFF,     //  Setup any initial conditions first time thru
+  LED_OFF_NOT_TALKING,     //  Setup any initial conditions first time thru
   LED_ON,      //  Figure started talking
   LED_KEEP_ON, //  Figure continue to talk
   LED_DIMMING  //  Figure stopped talking, led dimming
@@ -76,11 +76,11 @@ const int Z_PIN = A0;
 
 // const unsigned long timeStart = micros(); // ? not needed
 // const unsigned long delayLEDon = 4000; // delay LED on from when Fig stopped talking
-unsigned long delayLEDon = 950;  //time that led stays on after figure stops talking
+unsigned long delayLEDon = 1000;  //time that led stays on after figure stops talking
 unsigned long lastKnownTalkingTime[7];
 
-const int dimmingSteps = 20;      // Number of steps for dimming
-const int dimmingDuration = 1000; // Total time for dimming in milliseconds
+const int dimmingSteps = 70;      // Number of steps for dimming
+const int dimmingDuration = 550; // Total time for dimming in milliseconds
 
 unsigned long dimmingStartTime[7];
 int dimmingStep[7];
@@ -88,6 +88,7 @@ int dimmingStep[7];
 // put function declarations here:
 int readMux(int channel);
 void clearLEDs();
+void isFigureNowTalking(int channel, int photoVal)
 
 void setup()
 {
@@ -127,7 +128,7 @@ void loop()
 
     switch (figState[i])
     {
-    case LED_OFF: // Off not talking
+    case LED_OFF_NOT_TALKING: 
 
       if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
       {
@@ -147,13 +148,42 @@ void loop()
 
       else //  figure has stopped talking (LED still on)
       {
+        figState[i] = LED_KEEP_ON;
+      }
+      break;
+
+    case LED_KEEP_ON: //  On, stopped talking, so that ligiht is not choppy when cont talking
+// todo need to see if figure started talking again
+
+if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
+{
+  lastKnownTalkingTime[i] = timeRead;
+  figState[i] = LED_ON; // now talking
+  ledStrip.fill(ledStrip.Color(FIGURE_COLOR[i][0], FIGURE_COLOR[i][1], FIGURE_COLOR[i][2], FIGURE_COLOR[i][3]), i * LED_IN_GROUP, LED_IN_GROUP);
+  ledStrip.show(); //
+}
+
+      if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
+      {
+        // Still in the delay period, do nothing
+      }
+      else
+      {
         figState[i] = LED_DIMMING;
         dimmingStep[i] = 0;             // Reset dimming step
         dimmingStartTime[i] = timeRead; // Start dimming
       }
-      break;
 
     case LED_DIMMING: //  On, not talking  , dimming
+// TODO  need to see if figure started talking again
+
+if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
+{
+  lastKnownTalkingTime[i] = timeRead;
+  figState[i] = LED_ON; // now talking
+  ledStrip.fill(ledStrip.Color(FIGURE_COLOR[i][0], FIGURE_COLOR[i][1], FIGURE_COLOR[i][2], FIGURE_COLOR[i][3]), i * LED_IN_GROUP, LED_IN_GROUP);
+  ledStrip.show(); //
+}
 
       if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
       {
@@ -185,7 +215,7 @@ void loop()
         {
           // Turn off the lights when dimming is complete
           ledStrip.fill(ledStrip.Color(0, 0, 0, 0), i * LED_IN_GROUP, LED_IN_GROUP);
-          figState[i] = LED_OFF; // Reset to off state
+          figState[i] = LED_OFF_NOT_TALKING; // Reset to off state
         }
       }
       break;
