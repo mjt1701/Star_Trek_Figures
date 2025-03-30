@@ -19,12 +19,7 @@ const int TALKING_MIN[7] = {
     135,  // Fig 3 Talking Photo Min
     110,  // Fig 4 Talking Photo Min
     100,  // Fig 5 Talking Photo Min
-    300}; // Fig 6 Talking Photo Min
-
-// Define Figure State for each figure and initialize to 0 for each
-//  0       Off  or init
-//  1       On, still talking
-//  2       On, not talking, lights still on
+    200}; // Fig 6 Talking Photo Min
 
 enum figStates
 {
@@ -76,7 +71,7 @@ const int Z_PIN = A0;
 
 // const unsigned long timeStart = micros(); // ? not needed
 // const unsigned long delayLEDon = 4000; // delay LED on from when Fig stopped talking
-unsigned long delayLEDon = 1000;  //time that led stays on after figure stops talking
+unsigned long delayLEDon = 1300;  //time that led stays on after figure stops talking
 unsigned long lastKnownTalkingTime[7];
 
 const int dimmingSteps = 70;      // Number of steps for dimming
@@ -88,7 +83,7 @@ int dimmingStep[7];
 // put function declarations here:
 int readMux(int channel);
 void clearLEDs();
-void isFigureNowTalking(int channel, int photoVal)
+void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead);
 
 void setup()
 {
@@ -129,7 +124,8 @@ void loop()
     switch (figState[i])
     {
     case LED_OFF_NOT_TALKING: 
-
+    isFigureNowTalking( i, photoVal, timeRead);
+    /*
       if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
       {
         lastKnownTalkingTime[i] = timeRead;
@@ -137,6 +133,7 @@ void loop()
         ledStrip.fill(ledStrip.Color(FIGURE_COLOR[i][0], FIGURE_COLOR[i][1], FIGURE_COLOR[i][2], FIGURE_COLOR[i][3]), i * LED_IN_GROUP, LED_IN_GROUP);
         ledStrip.show(); //
       }
+      */
       break;
 
     case LED_ON: //  On,  talking
@@ -154,7 +151,9 @@ void loop()
 
     case LED_KEEP_ON: //  On, stopped talking, so that ligiht is not choppy when cont talking
 // todo need to see if figure started talking again
+isFigureNowTalking( i, photoVal, timeRead);
 
+/*
 if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
 {
   lastKnownTalkingTime[i] = timeRead;
@@ -162,6 +161,7 @@ if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color a
   ledStrip.fill(ledStrip.Color(FIGURE_COLOR[i][0], FIGURE_COLOR[i][1], FIGURE_COLOR[i][2], FIGURE_COLOR[i][3]), i * LED_IN_GROUP, LED_IN_GROUP);
   ledStrip.show(); //
 }
+  */
 
       if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
       {
@@ -176,7 +176,10 @@ if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color a
 
     case LED_DIMMING: //  On, not talking  , dimming
 // TODO  need to see if figure started talking again
+isFigureNowTalking( i, photoVal, timeRead);
 
+
+/*
 if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color and note the time
 {
   lastKnownTalkingTime[i] = timeRead;
@@ -184,7 +187,7 @@ if (photoVal > TALKING_MIN[i]) // If figure started talking, turn on the color a
   ledStrip.fill(ledStrip.Color(FIGURE_COLOR[i][0], FIGURE_COLOR[i][1], FIGURE_COLOR[i][2], FIGURE_COLOR[i][3]), i * LED_IN_GROUP, LED_IN_GROUP);
   ledStrip.show(); //
 }
-
+*/
       if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
       {
         // Still in the delay period, do nothing
@@ -236,7 +239,7 @@ int readMux(int channel)
 
   //?  can this be made global so that it does not have to be created every time thru loop
   //?  is it really created every time thru??
-  // todo make it static
+  // todo make it static const
   const int muxChannel[8][3] = {
       {0, 0, 0}, // channel 0
       {1, 0, 0}, // channel 1
@@ -271,4 +274,19 @@ void clearLEDs()
     // Set color to zero which is off
     ledStrip.setPixelColor(i, 0);
   }
+}
+
+// check if figure started talking and set variables and LEDs
+void  isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)
+{
+  if (inPhotoVal > TALKING_MIN[inChannel]) // If figure started talking, turn on the color and note the time
+  {
+    lastKnownTalkingTime[inChannel] = inTimeRead;
+    ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1], 
+                                 FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]), 
+                                 inChannel * LED_IN_GROUP, LED_IN_GROUP);
+    ledStrip.show(); //
+     figState[inChannel] = LED_ON; // now talking
+  }
+  
 }
