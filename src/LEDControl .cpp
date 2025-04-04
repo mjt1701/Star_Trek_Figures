@@ -7,8 +7,17 @@
 // Initialize the NeoPixel strip (this will set up the pin and begin communication)
 void LEDControl::begin() {
     LEDStrip.begin();
+    Serial.println("LEDControl::begin.");
 LEDStrip.show();  // Initialize all pixels to 'off'
 }   
+
+void LEDControl::turnFigOn(int figNum){
+    LEDStrip.fill(LEDStrip.Color(0, 0, 122, 122), 
+    figNum * LED_IN_GROUP, LED_IN_GROUP);
+Serial.println("led on.");
+
+
+}
 
 /*
 this will need to grab the color of the selected ifgure
@@ -19,17 +28,21 @@ this will need to grab the color of the selected ifgure
 }
 */
 
+void LEDControl::show(){
+    LEDStrip.show();  // Initialize all pixels to 'off'
+    Serial.println("LEDControl::show.");
+}
 
-
-void LEDControl::setFigureTalking(int m_figruenumberxxx){
+void LEDControl::setFigureLED(int m_figruenumberxxx){
     //  getFigureChannel 
     //  getFigureColor
-  
-    LEDStrip.fill(LEDStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1], 
+ /*
+     LEDStrip.fill(LEDStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1], 
     FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]), 
     inChannel * LED_IN_GROUP, LED_IN_GROUP);
-
+ */ 
 }
+
 
 
 

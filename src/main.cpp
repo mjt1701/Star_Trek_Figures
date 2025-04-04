@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "LEDControl.h"
 
 // Star Trek Figures Project
 //
@@ -55,7 +56,7 @@ const int reduceFactor = 20; // in percentage  // ? not needed
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(LED_NUM_TOTAL, LED_PIN, NEO_GRBW + NEO_KHZ800);
+//  Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(LED_NUM_TOTAL, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
 // Mux control pins for photoresistors
 const int S0 = 4;
@@ -78,23 +79,33 @@ int dimmingStep[7];
 
 // put function declarations here:
 int readMux(int channel);
-void clearLEDs();
 void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead);
 
 void setup()
 {
   // Setup Serial Monitor
-  //  Serial.begin(9600);
-  //   Serial.println("Starting Program");
+    Serial.begin(9600);
+     Serial.println("Starting Program");
+
 
   // Initialize the LEDs
-  ledStrip.begin();
+LEDControl   LEDobj(LED_PIN, LED_NUM_TOTAL);
+
+
+
+LEDobj.begin();
   delay(50); // ?  Needed?  not in chatgpt code
   // Clear them all
-  clearLEDs();
+  LEDobj.clearLEDs();
   // Show the result of clearing the LEDs
-  ledStrip.show();
+  LEDobj.show();
   // todo add a simple LED flash to indicated the figures got the word to start
+
+  
+  Serial.println("long delay...");
+  delay(90000);
+
+
 
   // Initialize the photoresistor address pins
   pinMode(S0, OUTPUT);
@@ -111,6 +122,10 @@ void setup()
 
 void loop()
 {
+
+/*
+
+
   // Loop through each figure
   for (int i = 0; i < NUMBER_OF_FIGS; i++)
   {
@@ -195,6 +210,8 @@ isFigureNowTalking( i, photoVal, timeRead);
     }
     // end of figure if
   }
+*/
+
 
 } // end loop
 
@@ -230,28 +247,18 @@ int readMux(int channel)
   return readVal;
 }
 
-// Function to set all LEDs off
-void clearLEDs()
-{
-  // Cycle through all LEDs for figure in loop
-  for (int i = 0; i < LED_NUM_TOTAL; i++)
-  {
-    // Set color to zero which is off
-    ledStrip.setPixelColor(i, 0);
-  }
-}
 
 // check if figure started talking and set variables and LEDs
 void  isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)
 {
   if (inPhotoVal > TALKING_MIN[inChannel]) // If figure started talking, turn on the color and note the time
   {
-    lastKnownTalkingTime[inChannel] = inTimeRead;
-    ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1], 
-                                 FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]), 
-                                 inChannel * LED_IN_GROUP, LED_IN_GROUP);
-    ledStrip.show(); //
-     figState[inChannel] = LED_ON_TALKING; // now talking
+    // lastKnownTalkingTime[inChannel] = inTimeRead;
+    // ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1], 
+    //                              FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]), 
+    //                              inChannel * LED_IN_GROUP, LED_IN_GROUP);
+    // ledStrip.show(); //
+    //  figState[inChannel] = LED_ON_TALKING; // now talking
   }
   
 }

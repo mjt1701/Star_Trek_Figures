@@ -13,16 +13,13 @@ private:
     Adafruit_NeoPixel LEDStrip; // NeoPixel object that controls the strip
 
 public:
-    // Constructor: Initializes the strip with the given pin and number of pixels
-    LEDControl(int LED_PIN, int LED_NUM_TOTAL);
+    LEDControl(int LED_PIN, int LED_NUM_TOTAL);  //Constructor
 
     void begin();
-    void setColor(const std::string &newColor);
-
-    bool getState() const; // todo delete??  leddoes not have state
     void clearLEDs();
-    void setFigureTalking( int figruenumberxxx)
-
+    void setFigureLED(int figruenumberxxx);
+    void turnFigOn(int figNum);
+    void show();
 };
 
 #endif // LEDCONTROL_H
