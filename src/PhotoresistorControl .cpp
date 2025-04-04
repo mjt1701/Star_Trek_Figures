@@ -1,3 +1,6 @@
+
+
+
 #include "PhotoresistorControl.h"
 
 
@@ -7,6 +10,8 @@ PhotoresistorControl::PhotoresistorControl()
 
 void PhotoresistorControl::readLightLevel() {
 //  do stuff
+
+
 }
 
 void PhotoresistorControl::setPinMode() {
