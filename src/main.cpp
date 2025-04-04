@@ -2,7 +2,6 @@
 //
 //  My Matt Troha
 
-
 #include <Arduino.h>
 #include "LEDControl.h"
 #include "PhotoresistorControl.h"
@@ -60,7 +59,7 @@ const int reduceFactor = 20; // in percentage  // ? not needed
 //  Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(LED_NUM_TOTAL, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
 // Mux control pins for photoresistors
-// const int S0 = 4;
+// const int S0 =4;
 // const int S1 = 5;
 // const int S2 = 6;
 
@@ -106,17 +105,17 @@ LEDobj.begin();
   Serial.println("long delay...");
   delay(90000);
 
-
+  PhotoresistorControl PhotoResobj();
 
   // Initialize the photoresistor address pins
-  pinMode(S0, OUTPUT);
-  pinMode(S1, OUTPUT);
-  pinMode(S2, OUTPUT);
+  // pinMode(S0, OUTPUT);
+  // pinMode(S1, OUTPUT);
+  // pinMode(S2, OUTPUT);
 
   // Initialize the Photoresistor address to 000(first one)
-  digitalWrite(S0, LOW);
-  digitalWrite(S1, LOW);
-  digitalWrite(S2, LOW);
+  // digitalWrite(S0, LOW);
+  // digitalWrite(S1, LOW);
+  // digitalWrite(S2, LOW);
 }
 
 // ********************************************* LOOP starts

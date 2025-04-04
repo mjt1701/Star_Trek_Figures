@@ -12,16 +12,11 @@ private:
  int Z_PIN;
 
 public:
-    PhotoresistorControl( 
-         int S0,
-         int S1,
-         int S2, 
-         int Z_PIN
-     );
+    PhotoresistorControl( );
 
     void readLightLevel();
     void setPinMode();
-
+void setFigToRead(int figNum);
 };
 
 #endif // PHOTORESISTORCONTROL_H
