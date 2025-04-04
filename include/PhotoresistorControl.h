@@ -3,17 +3,25 @@
 
 class PhotoresistorControl {
 private:
-    int photoresistorPin;
-    int lightThreshold;
-    int lightLevel;
+    // Mux control pins for photoresistors
+ int S0;
+ int S1;
+ int S2;
+
+// Mux in "Z" pin
+ int Z_PIN;
 
 public:
-    PhotoresistorControl(int pin, int threshold = 512);
+    PhotoresistorControl( 
+         int S0,
+         int S1,
+         int S2, 
+         int Z_PIN
+     );
 
     void readLightLevel();
-    int getLightLevel() const;
-    bool isLightBelowThreshold() const;
-    void setThreshold(int threshold);
+    void setPinMode();
+
 };
 
 #endif // PHOTORESISTORCONTROL_H

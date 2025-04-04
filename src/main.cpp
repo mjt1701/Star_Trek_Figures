@@ -1,10 +1,11 @@
-#include <Arduino.h>
-#include "LEDControl.h"
-
 // Star Trek Figures Project
 //
 //  My Matt Troha
 
+
+#include <Arduino.h>
+#include "LEDControl.h"
+#include "PhotoresistorControl.h"
 
 const int LED_PIN = 2;
 const int LED_IN_GROUP = 8;
@@ -59,12 +60,12 @@ const int reduceFactor = 20; // in percentage  // ? not needed
 //  Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(LED_NUM_TOTAL, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
 // Mux control pins for photoresistors
-const int S0 = 4;
-const int S1 = 5;
-const int S2 = 6;
+// const int S0 = 4;
+// const int S1 = 5;
+// const int S2 = 6;
 
 // Mux in "Z" pin
-const int Z_PIN = A0;
+// const int Z_PIN = A0;
 
 // const unsigned long timeStart = micros(); // ? not needed
 // const unsigned long delayLEDon = 4000; // delay LED on from when Fig stopped talking
