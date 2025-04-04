@@ -3,7 +3,7 @@
 
 class PhotoresistorControl {
 private:
-    // Mux control pins for photoresistors
+    // Mux control pins for reading photoresistors
  int S0;
  int S1;
  int S2;
@@ -16,7 +16,7 @@ public:
 
     void readLightLevel();
     void setPinMode();
-void setFigToRead(int figNum);
+// void setFigToRead(int figNum);
 };
 
 #endif // PHOTORESISTORCONTROL_H

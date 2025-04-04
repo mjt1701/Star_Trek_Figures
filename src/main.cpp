@@ -105,7 +105,8 @@ LEDobj.begin();
   Serial.println("long delay...");
   delay(90000);
 
-  PhotoresistorControl PhotoResobj();
+   // Initialize the
+    PhotoresistorControl PhotoResObj();
 
   // Initialize the photoresistor address pins
   // pinMode(S0, OUTPUT);
@@ -218,7 +219,7 @@ isFigureNowTalking( i, photoVal, timeRead);
 // read the photoresistor for a
 int readMux(int channel)
 {
-  int controlPin[] = {S0, S1, S2};
+ // int controlPin[] = {S0, S1, S2};
 
   //?  can this be made global so that it does not have to be created every time thru loop
   //?  is it really created every time thru??   
@@ -238,13 +239,13 @@ int readMux(int channel)
   for (int i = 0; i < 3; i++)
   {
     // todo  change to bit banging  / dont need to now
-    digitalWrite(controlPin[i], muxChannel[channel][i]);
+ //   digitalWrite(controlPin[i], muxChannel[channel][i]);
   }
 
   // todo  change to bit banging / dont need to now
-  int readVal = analogRead(Z_PIN);
+  //int readVal = analogRead(Z_PIN);
 
-  return readVal;
+ // return readVal;
 }
 
 
