@@ -102,11 +102,15 @@ LEDobj.begin();
   // todo add a simple LED flash to indicated the figures got the word to start
 
   
-  Serial.println("long delay...");
-  delay(90000);
+ 
 
    // Initialize the
     PhotoresistorControl PhotoResObj();
+
+
+ Serial.println("long delay...");
+  delay(90000);
+
 
   // Initialize the photoresistor address pins
   // pinMode(S0, OUTPUT);
@@ -217,36 +221,36 @@ isFigureNowTalking( i, photoVal, timeRead);
 } // end loop
 
 // read the photoresistor for a
-int readMux(int channel)
-{
+// int readMux(int channel)
+
  // int controlPin[] = {S0, S1, S2};
 
   //?  can this be made global so that it does not have to be created every time thru loop
   //?  is it really created every time thru??   
   // todo make it static const  ;;  MAKE it part of the figure object
-  const int muxChannel[8][3] = {
-      {0, 0, 0}, // channel 0
-      {1, 0, 0}, // channel 1
-      {0, 1, 0}, // channel 2
-      {1, 1, 0}, // channel 3
-      {0, 0, 1}, // channel 4
-      {1, 0, 1}, // channel 5
-      {0, 1, 1}, // channel 6
-      {1, 1, 1}, // channel 7
-  };
+  // const int muxChannel[8][3] = {
+  //     {0, 0, 0}, // channel 0
+  //     {1, 0, 0}, // channel 1
+  //     {0, 1, 0}, // channel 2
+  //     {1, 1, 0}, // channel 3
+  //     {0, 0, 1}, // channel 4
+  //     {1, 0, 1}, // channel 5
+  //     {0, 1, 1}, // channel 6
+  //     {1, 1, 1}, // channel 7
+  // };
 
   // loop through the 3 signal pins
-  for (int i = 0; i < 3; i++)
-  {
-    // todo  change to bit banging  / dont need to now
- //   digitalWrite(controlPin[i], muxChannel[channel][i]);
-  }
+//   for (int i = 0; i < 3; i++)
+//   {
+//     // todo  change to bit banging  / dont need to now
+//  //   digitalWrite(controlPin[i], muxChannel[channel][i]);
+//   }
 
   // todo  change to bit banging / dont need to now
   //int readVal = analogRead(Z_PIN);
 
  // return readVal;
-}
+
 
 
 // check if figure started talking and set variables and LEDs
