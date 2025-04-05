@@ -58,14 +58,6 @@ const int reduceFactor = 20; // in percentage  // ? not needed
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
 //  Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(LED_NUM_TOTAL, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
-// Mux control pins for photoresistors
-// const int S0 =4;
-// const int S1 = 5;
-// const int S2 = 6;
-
-// Mux in "Z" pin
-// const int Z_PIN = A0;
-
 // const unsigned long timeStart = micros(); // ? not needed
 // const unsigned long delayLEDon = 4000; // delay LED on from when Fig stopped talking
 unsigned long delayLEDon = 1300;  //time that led stays on after figure stops talking
@@ -90,37 +82,23 @@ void setup()
 
   // Initialize the LEDs
 LEDControl   LEDobj(LED_PIN, LED_NUM_TOTAL);
-
-
-
 LEDobj.begin();
   delay(50); // ?  Needed?  not in chatgpt code
-  // Clear them all
-  LEDobj.clearLEDs();
-  // Show the result of clearing the LEDs
-  LEDobj.show();
-  // todo add a simple LED flash to indicated the figures got the word to start
 
-  
- 
+  // simple LED flash to indicated start up
+  LEDobj.LEDsAllOff();
+  LEDobj.LEDsAllOn();  // todo chanhe to flash
+  delay(750);
+  LEDobj.LEDsAllOff();
+
+  Serial.println("startup flash...");
 
    // Initialize the
     PhotoresistorControl PhotoResObj();
-
+  Serial.println("photoread object.");
 
  Serial.println("long delay...");
   delay(90000);
-
-
-  // Initialize the photoresistor address pins
-  // pinMode(S0, OUTPUT);
-  // pinMode(S1, OUTPUT);
-  // pinMode(S2, OUTPUT);
-
-  // Initialize the Photoresistor address to 000(first one)
-  // digitalWrite(S0, LOW);
-  // digitalWrite(S1, LOW);
-  // digitalWrite(S2, LOW);
 }
 
 // ********************************************* LOOP starts
@@ -239,19 +217,7 @@ isFigureNowTalking( i, photoVal, timeRead);
   //     {1, 1, 1}, // channel 7
   // };
 
-  // loop through the 3 signal pins
-//   for (int i = 0; i < 3; i++)
-//   {
-//     // todo  change to bit banging  / dont need to now
-//  //   digitalWrite(controlPin[i], muxChannel[channel][i]);
-//   }
-
   // todo  change to bit banging / dont need to now
-  //int readVal = analogRead(Z_PIN);
-
- // return readVal;
-
-
 
 // check if figure started talking and set variables and LEDs
 void  isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)

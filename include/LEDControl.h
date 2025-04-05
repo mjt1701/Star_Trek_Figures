@@ -1,6 +1,7 @@
 #ifndef LEDCONTROL_H
 #define LEDCONTROL_H
 
+#include <Arduino.h>
 #include <Adafruit_NeoPixel.h>
 
 class LEDControl
@@ -16,7 +17,8 @@ public:
     LEDControl(int LED_PIN, int LED_NUM_TOTAL);  //Constructor
 
     void begin();
-    void clearLEDs();
+    void LEDsAllOff();
+    void LEDsAllOn();
     void setFigureLED(int figruenumberxxx);
     void turnFigOn(int figNum);
     void show();

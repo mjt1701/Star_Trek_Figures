@@ -1,6 +1,8 @@
 #ifndef PHOTORESISTORCONTROL_H
 #define PHOTORESISTORCONTROL_H
 
+#include <Arduino.h>
+
 class PhotoresistorControl {
 private:
     // Mux control pins for reading photoresistors
@@ -14,7 +16,7 @@ private:
 public:
     PhotoresistorControl( );
 
-    void readLightLevel();
+    int readLightLevel(int m_mux0, int m_mux1, int m_mux2 );
     void setPinMode();
 // void setFigToRead(int figNum);
 };
