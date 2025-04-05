@@ -71,7 +71,7 @@ unsigned long dimmingStartTime[7];
 int dimmingStep[7];
 
 // put function declarations here:
-int readMux(int channel);
+// int readMux(int channel);
 void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead);
 
 void setup()
@@ -95,29 +95,65 @@ void setup()
 
   // Initialize the
   PhotoresistorControl PhotoResObj();
+
+
   Serial.println("after photoread object.");
 
-  Figures Spock(0, 100, 0, 0, 122, 122);
-  Serial.println("after Spock created...");
+  // Figures Spock(0, 100, 0, 0, 122, 122);
+  // Serial.println("after Spock created...");
+  // Serial.print("Fig num: ");
+  // Serial.println(Spock.getFigNum());
+
+  // Figures Chekov(1, 170, 76, 46, 0, 122);
+  // Serial.println("after Chekov created...");
+  // Serial.print("Fig num: ");
+  // Serial.println(Chekov.getFigNum());
+
+  // LEDobj.setFigLEDtoIllum2(Spock.getFigNum(),
+  //                          Spock.getFigColorRed(), Spock.getFigColorGreen(),
+  //                          Spock.getFigColorBlue(), Spock.getFigColorWhite());
+
+  // Serial.println("after Spock illum...");
+
+  // LEDobj.setFigLEDtoIllum2(Chekov.getFigNum(),
+  //                          Chekov.getFigColorRed(), Chekov.getFigColorGreen(),
+  //                          Chekov.getFigColorBlue(), Chekov.getFigColorWhite());
+
+  // Serial.println("after Chekov illum...");
+
+  // MyClass objects[] = {MyClass(10), MyClass(20), MyClass(30)};
+
+  Figures figArray[] = {
+      Figures(0, 100, 0, 0, 122, 122),
+      Figures(1, 170, 76, 46, 0, 122),
+      Figures(2, 170, 122, 0, 0, 122),
+      Figures(3, 135, 122, 0, 0, 122),
+      Figures(4, 110, 122, 0, 0, 122),
+      Figures(5, 110, 0, 0, 122, 122),
+      Figures(6, 175, 76, 46, 0, 122)};
+
+  Serial.println("array with 7 objects has been created.");
+
+for (int i; i<NUMBER_OF_FIGS; i++){
+
+  int photoVal =  PhotoResObj.readLightLevel(0,0,0,)  ;
+  unsigned long timeRead = millis();
+
+
+
+  // Serial.print("Fig num: ");
+  // Serial.println(Chekov.getFigNum());
   Serial.print("Fig num: ");
-  Serial.println(Spock.getFigNum());
+  Serial.println(figArray[i].getFigNum()  );
+  Serial.print("red: ");
+  Serial.println(figArray[i].getFigColorRed()  );
 
-  Figures Chekov(1, 170, 76, 46, 0, 122);
-  Serial.println("after Chekov created...");
-  Serial.print("Fig num: ");
-  Serial.println(Chekov.getFigNum());
+}
 
-  LEDobj.setFigLEDtoIllum2(Spock.getFigNum(),
-                           Spock.getFigColorRed(), Spock.getFigColorGreen(),
-                           Spock.getFigColorBlue(), Spock.getFigColorWhite());
 
-  Serial.println("after Spock illum...");
 
-  LEDobj.setFigLEDtoIllum2(Chekov.getFigNum(),
-                           Chekov.getFigColorRed(), Chekov.getFigColorGreen(),
-                           Chekov.getFigColorBlue(), Chekov.getFigColorWhite());
 
-  Serial.println("after Chekov illum...");
+
 
   Serial.println("in long delay...");
   delay(90000);
