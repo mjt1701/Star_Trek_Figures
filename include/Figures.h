@@ -16,6 +16,9 @@ class Figures
 {
 private:
   const int figureNumber;
+  const int MMUX0;
+  const int MMUX1;
+  const int MMUX2;
   const int TALKING_MIN;
   const int FIGURE_RED_VALUE;
   const int FIGURE_GREEN_VALUE;
@@ -30,7 +33,8 @@ private:
 
 public:
   Figures(int m_figNum, int TALKING_MIN,
-          int m_red, int m_green, int m_blue, int m_white);
+          int m_red, int m_green, int m_blue, int m_white,
+           int  m_mux0,  int m_mux1,   int m_mux2 );
 
   void didFigureStartTalking(int figureNumber);
 
@@ -43,6 +47,9 @@ public:
   int getFigBrightness();
   void setFigBrightness(int m_brght);
 
+  int getFigMux0();
+  int getFigMux1();
+  int getFigMux2();
 };
 
 #endif // FIGURES_H

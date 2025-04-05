@@ -95,10 +95,9 @@ void setup()
 
   // Initialize the
   PhotoresistorControl PhotoResObj;
-PhotoResObj.setPinMode();
+  PhotoResObj.setPinMode();
 
-
-// Serial.println(PhotoResObj.)
+  // Serial.println(PhotoResObj.)
 
   Serial.println("after photoread object.");
 
@@ -126,37 +125,43 @@ PhotoResObj.setPinMode();
 
   // MyClass objects[] = {MyClass(10), MyClass(20), MyClass(30)};
 
+  //     {0, 0, 0}, // channel 0
+  //     {1, 0, 0}, // channel 1
+  //     {0, 1, 0}, // channel 2
+  //     {1, 1, 0}, // channel 3
+  //     {0, 0, 1}, // channel 4
+  //     {1, 0, 1}, // channel 5
+  //     {0, 1, 1}, // channel 6
+  //     {1, 1, 1}, // channel 7
+
+
+// figNum,figThres,R,G,B,W,mux0,mux1,mux2
   Figures figArray[] = {
-      Figures(0, 100, 0, 0, 122, 122),
-      Figures(1, 170, 76, 46, 0, 122),
-      Figures(2, 170, 122, 0, 0, 122),
-      Figures(3, 135, 122, 0, 0, 122),
-      Figures(4, 110, 122, 0, 0, 122),
-      Figures(5, 110, 0, 0, 122, 122),
-      Figures(6, 175, 76, 46, 0, 122)};
+      Figures(0, 100, 0, 0, 122, 122, 0, 0, 0),
+      Figures(1, 170, 76, 46, 0, 122, 1, 0, 0),
+      Figures(2, 170, 122, 0, 0, 122, 0, 1, 0),
+      Figures(3, 135, 122, 0, 0, 122, 1, 1, 0),
+      Figures(4, 110, 122, 0, 0, 122, 0, 0, 1),
+      Figures(5, 110, 0, 0, 122, 122, 1, 0, 1),
+      Figures(6, 175, 76, 46, 0, 122, 1, 1, 1)};
 
   Serial.println("array with 7 objects has been created.");
 
-for (int i; i<NUMBER_OF_FIGS; i++){
+  for (int i; i < NUMBER_OF_FIGS; i++)
+  {
 
- // int photoVal =  PhotoResObj.readLightLevel(0,0,0,)  ;
-  unsigned long timeRead = millis();
+    // int photoVal =  PhotoResObj.readLightLevel(0,0,0,)  ;
+    unsigned long timeRead = millis();
 
-
-
-  // Serial.print("Fig num: ");
-  // Serial.println(Chekov.getFigNum());
-  Serial.print("Fig num: ");
-  Serial.println(figArray[i].getFigNum()  );
-  Serial.print("red: ");
-  Serial.println(figArray[i].getFigColorRed()  );
-
-}
-
-
-
-
-
+    // Serial.print("Fig num: ");
+    // Serial.println(Chekov.getFigNum());
+    Serial.print("Fig num: ");
+    Serial.print(figArray[i].getFigNum());
+    Serial.print(", red: ");
+    Serial.print(figArray[i].getFigColorRed());
+    Serial.print(", mux0: ");
+    Serial.println(figArray[i].getFigMux0());
+  }
 
   Serial.println("in long delay...");
   delay(90000);
