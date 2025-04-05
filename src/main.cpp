@@ -100,9 +100,7 @@ LEDobj.begin();
 Figures Spock(1, 100, 0, 0, 122, 122);
 Serial.println("after Spock created...");
 Serial.print("Fig num: ");
-
-int fn = Spock.getFigNum();
-Serial.println(fn );
+Serial.println(Spock.getFigNum() );
 
 
 

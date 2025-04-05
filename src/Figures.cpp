@@ -18,15 +18,29 @@ Serial.println("fig started talking...");
  }
 
  int Figures::getFigNum(){
-
 return figureNumber;
-
  }
 
+ int Figures::getFigColorRed() {
+        return FIGURE_RED_VALUE;
+ }
 
+ int Figures::getFigColorGreen() {
+        return FIGURE_GREEN_VALUE;
+ }
 
+ int Figures::getFigColorBlue() {
+        return FIGURE_BLUE_VALUE;
+ }
 
- void Figures::getFigColor() {};
+ int Figures::getFigColorWhite() {
+        return FIGURE_WHITE_VALUE;
+ }
 
+ void Figures::setFigBrightness(int m_brght){
+Figures::figureBrightness= m_brght;
+ }
 
-
+ int Figures::getFigBrightness() {
+        return figureBrightness;
+ }

@@ -22,6 +22,7 @@ const int FIGURE_RED_VALUE;
 const int FIGURE_GREEN_VALUE;
 const int FIGURE_BLUE_VALUE;
 const int FIGURE_WHITE_VALUE;
+int figureBrightness;
 //todo mux channel, or does it in photores?? no
 figStates figState;
 unsigned long lastKnownTalkingTime;
@@ -36,10 +37,13 @@ Figures(int m_figNum, int TALKING_MIN,
     void didFigureStartTalking(int figureNumber);
 
 int getFigNum();
-void getFigColor();
+int getFigColorRed();
+int getFigColorGreen();
+int getFigColorBlue();
+int getFigColorWhite();
 
-
-
+int getFigBrightness();
+void setFigBrightness(int m_brght);
 
 
 
