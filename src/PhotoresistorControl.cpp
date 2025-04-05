@@ -4,8 +4,11 @@
 #include "PhotoresistorControl.h"
 
 
-PhotoresistorControl::PhotoresistorControl() 
-    : S0(4), S1(5), S2(6), Z_PIN(A0) {Serial.println("PhotoRes objected created.");};
+ PhotoresistorControl::PhotoresistorControl() 
+     : S0(4), S1(5), S2(6), Z_PIN(A0) {Serial.println("PhotoRes objected created.");};
+
+
+ //   PhotoresistorControl::PhotoresistorControl() {}
 
 void PhotoresistorControl::setPinMode() {
     pinMode(S0, OUTPUT);

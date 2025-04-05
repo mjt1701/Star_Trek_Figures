@@ -94,8 +94,11 @@ void setup()
   Serial.println("after startup flash...");
 
   // Initialize the
-  PhotoresistorControl PhotoResObj();
+  PhotoresistorControl PhotoResObj;
+PhotoResObj.setPinMode();
 
+
+// Serial.println(PhotoResObj.)
 
   Serial.println("after photoread object.");
 
@@ -136,7 +139,7 @@ void setup()
 
 for (int i; i<NUMBER_OF_FIGS; i++){
 
-  int photoVal =  PhotoResObj.readLightLevel(0,0,0,)  ;
+ // int photoVal =  PhotoResObj.readLightLevel(0,0,0,)  ;
   unsigned long timeRead = millis();
 
 
