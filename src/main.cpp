@@ -61,10 +61,10 @@ const int reduceFactor = 20; // in percentage  // ? not needed
 
 // const unsigned long timeStart = micros(); // ? not needed
 // const unsigned long delayLEDon = 4000; // delay LED on from when Fig stopped talking
-unsigned long delayLEDon = 1300;  //time that led stays on after figure stops talking
+unsigned long delayLEDon = 1300; // time that led stays on after figure stops talking
 unsigned long lastKnownTalkingTime[7];
 
-const int dimmingSteps = 70;      // Number of steps for dimming
+const int dimmingSteps = 70;     // Number of steps for dimming
 const int dimmingDuration = 550; // Total time for dimming in milliseconds
 
 unsigned long dimmingStartTime[7];
@@ -77,34 +77,49 @@ void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)
 void setup()
 {
   // Setup Serial Monitor
-    Serial.begin(9600);
-     Serial.println("Starting Program");
+  Serial.begin(9600);
+  Serial.println("Starting Program");
 
   // Initialize the LEDs
-LEDControl   LEDobj(LED_PIN, LED_NUM_TOTAL);
-LEDobj.begin();
+  LEDControl LEDobj(LED_PIN, LED_NUM_TOTAL);
+  LEDobj.begin();
   delay(50); // ?  Needed?  not in chatgpt code
 
   // simple LED flash to indicated start up
   LEDobj.LEDsAllOff();
-  LEDobj.LEDsAllOn();  // todo chanhe to flash
+  LEDobj.LEDsAllOn(); // todo chanhe to flash
   delay(750);
   LEDobj.LEDsAllOff();
 
   Serial.println("after startup flash...");
 
-   // Initialize the
-    PhotoresistorControl PhotoResObj();
+  // Initialize the
+  PhotoresistorControl PhotoResObj();
   Serial.println("after photoread object.");
 
-Figures Spock(1, 100, 0, 0, 122, 122);
-Serial.println("after Spock created...");
-Serial.print("Fig num: ");
-Serial.println(Spock.getFigNum() );
+  Figures Spock(0, 100, 0, 0, 122, 122);
+  Serial.println("after Spock created...");
+  Serial.print("Fig num: ");
+  Serial.println(Spock.getFigNum());
 
+  Figures Chekov(1, 170, 76, 46, 0, 122);
+  Serial.println("after Chekov created...");
+  Serial.print("Fig num: ");
+  Serial.println(Chekov.getFigNum());
 
+  LEDobj.setFigLEDtoIllum2(Spock.getFigNum(),
+                           Spock.getFigColorRed(), Spock.getFigColorGreen(),
+                           Spock.getFigColorBlue(), Spock.getFigColorWhite());
 
- Serial.println("in long delay...");
+  Serial.println("after Spock illum...");
+
+  LEDobj.setFigLEDtoIllum2(Chekov.getFigNum(),
+                           Chekov.getFigColorRed(), Chekov.getFigColorGreen(),
+                           Chekov.getFigColorBlue(), Chekov.getFigColorWhite());
+
+  Serial.println("after Chekov illum...");
+
+  Serial.println("in long delay...");
   delay(90000);
 }
 
@@ -113,130 +128,128 @@ Serial.println(Spock.getFigNum() );
 void loop()
 {
 
-/*
+  /*
 
 
-  // Loop through each figure
-  for (int i = 0; i < NUMBER_OF_FIGS; i++)
-  {
-    // Read the photoresistor for this figure
-    int photoVal = readMux(i);
-    unsigned long timeRead = millis();
-
-    switch (figState[i])
+    // Loop through each figure
+    for (int i = 0; i < NUMBER_OF_FIGS; i++)
     {
-    case LED_OFF_NOT_TALKING: 
-    isFigureNowTalking( i, photoVal, timeRead);
-      break;
+      // Read the photoresistor for this figure
+      int photoVal = readMux(i);
+      unsigned long timeRead = millis();
 
-    case LED_ON_TALKING: //  On,  talking
-
-      if (photoVal > TALKING_MIN[i]) //  is figure is still talking
+      switch (figState[i])
       {
-        lastKnownTalkingTime[i] = timeRead;
-      }
+      case LED_OFF_NOT_TALKING:
+      isFigureNowTalking( i, photoVal, timeRead);
+        break;
 
-      else //  figure has stopped talking (LED still on)
-      {
-        figState[i] = LED_KEEP_ON;
-      }
-      break;
+      case LED_ON_TALKING: //  On,  talking
 
-    case LED_KEEP_ON: //  On, stopped talking, so that ligiht is not choppy when cont talking
-// todo need to see if figure started talking again
-isFigureNowTalking( i, photoVal, timeRead);
-
-      if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
-      {
-        // Still in the delay period, do nothing
-      }
-      else
-      {
-        figState[i] = LED_DIMMING;
-        dimmingStep[i] = 0;             // Reset dimming step
-        dimmingStartTime[i] = timeRead; // Start dimming
-      }
-
-    case LED_DIMMING: //  On, not talking  , dimming
-isFigureNowTalking( i, photoVal, timeRead);
-
-      if (timeRead - lastKnownTalkingTime[i] < delayLEDon)   // todo  is this needed??? taken care of just above??
-      {
-        // Still in the delay period, do nothing
-      }
-      else
-      {
-        // Start dimming process
-        if (dimmingStep[i] < dimmingSteps)
+        if (photoVal > TALKING_MIN[i]) //  is figure is still talking
         {
-          // Calculate the brightness based on the current dimming step
-          int brightness = 255 * (dimmingSteps - dimmingStep[i]) / dimmingSteps;
-          ledStrip.fill(ledStrip.Color(
-                            FIGURE_COLOR[i][0] * brightness / 255,
-                            FIGURE_COLOR[i][1] * brightness / 255,
-                            FIGURE_COLOR[i][2] * brightness / 255,
-                            FIGURE_COLOR[i][3] * brightness / 255),
-                            i * LED_IN_GROUP, LED_IN_GROUP);
-          ledStrip.show();
+          lastKnownTalkingTime[i] = timeRead;
+        }
 
-          // Check if it's time to move to the next dimming step
-          if (timeRead - dimmingStartTime[i] >= (dimmingDuration / dimmingSteps))
-          {
-            dimmingStep[i]++;
-            dimmingStartTime[i] = timeRead; // Reset the timer for the next step
-          }
+        else //  figure has stopped talking (LED still on)
+        {
+          figState[i] = LED_KEEP_ON;
+        }
+        break;
+
+      case LED_KEEP_ON: //  On, stopped talking, so that ligiht is not choppy when cont talking
+  // todo need to see if figure started talking again
+  isFigureNowTalking( i, photoVal, timeRead);
+
+        if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
+        {
+          // Still in the delay period, do nothing
         }
         else
         {
-          // Turn off the lights when dimming is complete
-          ledStrip.fill(ledStrip.Color(0, 0, 0, 0), i * LED_IN_GROUP, LED_IN_GROUP);
-          figState[i] = LED_OFF_NOT_TALKING; // Reset to off state
+          figState[i] = LED_DIMMING;
+          dimmingStep[i] = 0;             // Reset dimming step
+          dimmingStartTime[i] = timeRead; // Start dimming
         }
+
+      case LED_DIMMING: //  On, not talking  , dimming
+  isFigureNowTalking( i, photoVal, timeRead);
+
+        if (timeRead - lastKnownTalkingTime[i] < delayLEDon)   // todo  is this needed??? taken care of just above??
+        {
+          // Still in the delay period, do nothing
+        }
+        else
+        {
+          // Start dimming process
+          if (dimmingStep[i] < dimmingSteps)
+          {
+            // Calculate the brightness based on the current dimming step
+            int brightness = 255 * (dimmingSteps - dimmingStep[i]) / dimmingSteps;
+            ledStrip.fill(ledStrip.Color(
+                              FIGURE_COLOR[i][0] * brightness / 255,
+                              FIGURE_COLOR[i][1] * brightness / 255,
+                              FIGURE_COLOR[i][2] * brightness / 255,
+                              FIGURE_COLOR[i][3] * brightness / 255),
+                              i * LED_IN_GROUP, LED_IN_GROUP);
+            ledStrip.show();
+
+            // Check if it's time to move to the next dimming step
+            if (timeRead - dimmingStartTime[i] >= (dimmingDuration / dimmingSteps))
+            {
+              dimmingStep[i]++;
+              dimmingStartTime[i] = timeRead; // Reset the timer for the next step
+            }
+          }
+          else
+          {
+            // Turn off the lights when dimming is complete
+            ledStrip.fill(ledStrip.Color(0, 0, 0, 0), i * LED_IN_GROUP, LED_IN_GROUP);
+            figState[i] = LED_OFF_NOT_TALKING; // Reset to off state
+          }
+        }
+        break;
+
+      default:
+        break;
       }
-      break;
-
-    default:
-      break;
+      // end of figure if
     }
-    // end of figure if
-  }
-*/
-
+  */
 
 } // end loop
 
 // read the photoresistor for a
 // int readMux(int channel)
 
- // int controlPin[] = {S0, S1, S2};
+// int controlPin[] = {S0, S1, S2};
 
-  //?  can this be made global so that it does not have to be created every time thru loop
-  //?  is it really created every time thru??   
-  // todo make it static const  ;;  MAKE it part of the figure object
-  // const int muxChannel[8][3] = {
-  //     {0, 0, 0}, // channel 0
-  //     {1, 0, 0}, // channel 1
-  //     {0, 1, 0}, // channel 2
-  //     {1, 1, 0}, // channel 3
-  //     {0, 0, 1}, // channel 4
-  //     {1, 0, 1}, // channel 5
-  //     {0, 1, 1}, // channel 6
-  //     {1, 1, 1}, // channel 7
-  // };
+//?  can this be made global so that it does not have to be created every time thru loop
+//?  is it really created every time thru??
+// todo make it static const  ;;  MAKE it part of the figure object
+// const int muxChannel[8][3] = {
+//     {0, 0, 0}, // channel 0
+//     {1, 0, 0}, // channel 1
+//     {0, 1, 0}, // channel 2
+//     {1, 1, 0}, // channel 3
+//     {0, 0, 1}, // channel 4
+//     {1, 0, 1}, // channel 5
+//     {0, 1, 1}, // channel 6
+//     {1, 1, 1}, // channel 7
+// };
 
-  // todo  change to bit banging / dont need to now
+// todo  change to bit banging / dont need to now
 
 // check if figure started talking and set variables and LEDs
-void  isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)
+void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)
 {
   if (inPhotoVal > TALKING_MIN[inChannel]) // If figure started talking, turn on the color and note the time
   {
     // lastKnownTalkingTime[inChannel] = inTimeRead;
-    // ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1], 
-    //                              FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]), 
+    // ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1],
+    //                              FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]),
     //                              inChannel * LED_IN_GROUP, LED_IN_GROUP);
     // ledStrip.show(); //
     //  figState[inChannel] = LED_ON_TALKING; // now talking
   }
-  
 }

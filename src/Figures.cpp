@@ -2,45 +2,27 @@
 
 // Constructor: Initializes the NeoPixel strip with the specified pin and number of pixels
 Figures::Figures(int m_figNum, int m_min,
-        int m_red, int m_green, int m_blue, int m_white ) 
-: figureNumber(m_figNum),
-TALKING_MIN(m_min),
-FIGURE_RED_VALUE(m_red),
- FIGURE_GREEN_VALUE(m_green),
- FIGURE_BLUE_VALUE(m_blue),
- FIGURE_WHITE_VALUE(m_white),
- figState(LED_OFF_NOT_TALKING)
- {};
+                 int m_red, int m_green, int m_blue, int m_white)
+    : figureNumber(m_figNum),
+      TALKING_MIN(m_min),
+      FIGURE_RED_VALUE(m_red),
+      FIGURE_GREEN_VALUE(m_green),
+      FIGURE_BLUE_VALUE(m_blue),
+      FIGURE_WHITE_VALUE(m_white),
+      figState(LED_OFF_NOT_TALKING) {};
 
- void Figures::didFigureStartTalking(int figureNumber) {
-// stuff 
-Serial.println("fig started talking...");
- }
+void Figures::didFigureStartTalking(int figureNumber)
+{
+        // stuff
+        Serial.println("fig started talking...");
+}
 
- int Figures::getFigNum(){
-return figureNumber;
- }
+int Figures::getFigNum() { return figureNumber; }
+int Figures::getFigColorRed() { return FIGURE_RED_VALUE; }
+int Figures::getFigColorGreen() { return FIGURE_GREEN_VALUE; }
+int Figures::getFigColorBlue() { return FIGURE_BLUE_VALUE; }
+int Figures::getFigColorWhite() { return FIGURE_WHITE_VALUE; }
 
- int Figures::getFigColorRed() {
-        return FIGURE_RED_VALUE;
- }
+void Figures::setFigBrightness(int m_brght) { Figures::figureBrightness = m_brght; }
+int Figures::getFigBrightness() { return figureBrightness; }
 
- int Figures::getFigColorGreen() {
-        return FIGURE_GREEN_VALUE;
- }
-
- int Figures::getFigColorBlue() {
-        return FIGURE_BLUE_VALUE;
- }
-
- int Figures::getFigColorWhite() {
-        return FIGURE_WHITE_VALUE;
- }
-
- void Figures::setFigBrightness(int m_brght){
-Figures::figureBrightness= m_brght;
- }
-
- int Figures::getFigBrightness() {
-        return figureBrightness;
- }

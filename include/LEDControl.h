@@ -22,6 +22,11 @@ public:
     void setFigureLED(int figruenumberxxx);
     void turnFigOn(int figNum);
     void show();
+
+    void setFigLEDtoIllum();
+    void setFigLEDtoIllum2(int m_figNum,int m_red,int m_green,int m_blue,int m_white);
+
+
 };
 
 #endif // LEDCONTROL_H

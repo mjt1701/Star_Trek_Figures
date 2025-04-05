@@ -1,8 +1,9 @@
 #include "LEDControl.h"
+#include "Figures.h"
 
 // Constructor: Initializes the NeoPixel strip with the specified pin and number of pixels
 LEDControl::LEDControl(int pin, int numPixels)
-    : LEDStrip(numPixels, pin, NEO_GRBW + NEO_KHZ800) {    Serial.println("LED objected created.");}
+    : LEDStrip(numPixels, pin, NEO_GRBW + NEO_KHZ800) { Serial.println("LED objected created."); }
 
 // Initialize the NeoPixel strip (this will set up the pin and begin communication)
 void LEDControl::begin()
@@ -66,10 +67,28 @@ void LEDControl::LEDsAllOn()
     // Cycle through all LEDs for figure in loop
     for (int i = 0; i < LEDControl::LED_NUM_TOTAL; i++)
     {
-        // Set color to 
-        //todo update color variable
+        // Set color to
+        // todo update color variable
         LEDStrip.setPixelColor(i, 125);
     }
     LEDStrip.show();
     Serial.println("All LEDs On.");
+}
+
+// void LEDControl::setFigLEDtoIllum()
+// {
+//     // lastKnownTalkingTime[inChannel] = inTimeRead;
+//     int m_red = 0;
+//     m_red = Figures::getFigColorRed();
+
+//     LEDStrip.fill(LEDStrip.Color(100, 123, 124, 255), 0 * LED_IN_GROUP, LED_IN_GROUP);
+//     LEDStrip.show();
+// }
+
+void LEDControl::setFigLEDtoIllum2(
+    int m_figNum, int m_red, int m_green, int m_blue, int m_white)
+{
+    LEDStrip.fill(LEDStrip.Color(m_red, m_green, m_blue, m_white),
+                  m_figNum * LED_IN_GROUP, LED_IN_GROUP);
+    LEDStrip.show();
 }
