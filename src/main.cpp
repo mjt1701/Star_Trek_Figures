@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include "LEDControl.h"
 #include "PhotoresistorControl.h"
+#include "Figures.h"
 
 const int LED_PIN = 2;
 const int LED_IN_GROUP = 8;
@@ -21,17 +22,17 @@ const int TALKING_MIN[7] = {
     100,  // Fig 5 Talking Photo Min
     200}; // Fig 6 Talking Photo Min
 
-enum figStates
-{
-  LED_OFF_NOT_TALKING,     //  Setup any initial conditions first time thru
-  LED_ON_TALKING,      //  Figure started talking
-  LED_KEEP_ON,        //  Figure stay lit for a bit after stop talking
-  LED_DIMMING         //  Figure stopped talking, led dimming
-                        //  all Figures not taking long enough that prettly lights start ; maybe will need additianal states for tbat
-};
+// enum figStates
+// {
+//   LED_OFF_NOT_TALKING,     //  Setup any initial conditions first time thru
+//   LED_ON_TALKING,      //  Figure started talking
+//   LED_KEEP_ON,        //  Figure stay lit for a bit after stop talking
+//   LED_DIMMING         //  Figure stopped talking, led dimming
+//                         //  all Figures not taking long enough that prettly lights start ; maybe will need additianal states for tbat
+// };
 
-//  int figState[] = {0, 0, 0, 0, 0, 0, 0};
-enum figStates figState[7];
+// //  int figState[] = {0, 0, 0, 0, 0, 0, 0};
+// enum figStates figState[7];
 
 // color palette for each fig cell
 const int FIGURE_COLOR[7][4] = {
@@ -79,7 +80,6 @@ void setup()
     Serial.begin(9600);
      Serial.println("Starting Program");
 
-
   // Initialize the LEDs
 LEDControl   LEDobj(LED_PIN, LED_NUM_TOTAL);
 LEDobj.begin();
@@ -91,13 +91,22 @@ LEDobj.begin();
   delay(750);
   LEDobj.LEDsAllOff();
 
-  Serial.println("startup flash...");
+  Serial.println("after startup flash...");
 
    // Initialize the
     PhotoresistorControl PhotoResObj();
-  Serial.println("photoread object.");
+  Serial.println("after photoread object.");
 
- Serial.println("long delay...");
+Figures Spock(1, 100, 0, 0, 122, 122);
+Serial.println("after Spock created...");
+Serial.print("Fig num: ");
+
+int fn = Spock.getFigNum();
+Serial.println(fn );
+
+
+
+ Serial.println("in long delay...");
   delay(90000);
 }
 

@@ -12,16 +12,17 @@ enum figStates
                         //  all Figures not taking long enough that prettly lights start ; maybe will need additianal states for tbat
 };
 
-enum figStates figState;
+// enum figStates figState;
 
 class Figures {
 private:
-int figureNumber;
-int TALKING_MIN;
-int FIGURE_RED_VALUE;
-int FIGURE_GREEN_VALUE;
-int FIGURE_BLUE_VALUE;
-int FIGURE_WHITE_VALUE;
+const int figureNumber;
+const int TALKING_MIN;
+const int FIGURE_RED_VALUE;
+const int FIGURE_GREEN_VALUE;
+const int FIGURE_BLUE_VALUE;
+const int FIGURE_WHITE_VALUE;
+//todo mux channel, or does it in photores?? no
 figStates figState;
 unsigned long lastKnownTalkingTime;
 unsigned long dimmingStartTime;
@@ -29,10 +30,18 @@ int dimmingStep;
 
 
 public:
-Figures(int m_figNum, 
+Figures(int m_figNum, int TALKING_MIN,
     int m_red, int m_green, int m_blue, int m_white ) ;
 
     void didFigureStartTalking(int figureNumber);
+
+int getFigNum();
+void getFigColor();
+
+
+
+
+
 
 };
 

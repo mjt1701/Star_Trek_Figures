@@ -1,9 +1,10 @@
 #include "Figures.h"
 
 // Constructor: Initializes the NeoPixel strip with the specified pin and number of pixels
-Figures::Figures(int m_figNum, 
+Figures::Figures(int m_figNum, int m_min,
         int m_red, int m_green, int m_blue, int m_white ) 
 : figureNumber(m_figNum),
+TALKING_MIN(m_min),
 FIGURE_RED_VALUE(m_red),
  FIGURE_GREEN_VALUE(m_green),
  FIGURE_BLUE_VALUE(m_blue),
@@ -15,3 +16,17 @@ FIGURE_RED_VALUE(m_red),
 // stuff 
 Serial.println("fig started talking...");
  }
+
+ int Figures::getFigNum(){
+
+return figureNumber;
+
+ }
+
+
+
+
+ void Figures::getFigColor() {};
+
+
+
