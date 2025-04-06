@@ -7,8 +7,8 @@
 #include "PhotoresistorControl.h"
 #include "Figures.h"
 
-//TODO CLEAN UP GLOBAL CONSTANTS into config.h
-//  look at ledcontrol especially
+// TODO CLEAN UP GLOBAL CONSTANTS into config.h
+//   look at ledcontrol especially
 const int LED_PIN = 2;
 const int LED_IN_GROUP = 8;
 const int NUMBER_OF_FIGS = 8;
@@ -18,9 +18,8 @@ const int LED_NUM_TOTAL = NUMBER_OF_FIGS * LED_IN_GROUP;
 // factor to reduce brightness each loop when dimming
 const int reduceFactor = 20; // in percentage  // ? not needed
 
-
- // delay LED on from when Fig stopped talking
-unsigned long delayLEDon = 1300; 
+// delay LED on from when Fig stopped talking
+unsigned long delayLEDon = 1300;
 //  unsigned long lastKnownTalkingTime[7];
 
 const int dimmingSteps = 70;     // Number of steps for dimming
@@ -38,7 +37,7 @@ void setup()
   // Initialize the LEDs
   LEDControl LEDobj(LED_PIN, LED_NUM_TOTAL);
   LEDobj.begin();
-  delay(50); 
+  delay(50);
 
   // simple LED flash to indicated start up
   LEDobj.LEDsAllOff();
@@ -64,48 +63,82 @@ void setup()
 
   Serial.println("array with 7 objects has been created.");
 
-
   //  ------   TEST FOR LOOP---------
 
-
-  for (int i; i <   NUMBER_OF_FIGS; i++)
+  for (int i; i < NUMBER_OF_FIGS; i++)
   {
-      // Read the photoresistor for this figure
-      int photoVal = PhotoResObj.readLightLevel(
-                     figArray[i].getFigMux0(),
-               figArray[i].getFigMux1(),
-               figArray[i].getFigMux2()   );
-Serial.println(photoVal);
-       photoVal = PhotoResObj.readLL( figArray[i]);         
-       Serial.println(photoVal);
+    // Read the photoresistor for this figure
+    int photoVal = PhotoResObj.readLightLevel(
+        figArray[i].getFigMux0(),
+        figArray[i].getFigMux1(),
+        figArray[i].getFigMux2());
+    Serial.println(photoVal);
+    photoVal = PhotoResObj.readLL(figArray[i]);
+    Serial.println(photoVal);
 
-    // int photoVal =  PhotoResObj.readLightLevel(0,0,0,)  ;
     unsigned long timeRead = millis();
-      Serial.println(timeRead);
-  
-      
+    Serial.println(timeRead);
+
     switch (figArray[i].getFigState())
     {
-      case LED_OFF_NOT_TALKING:
-  //    isFigureNowTalking( i, photoVal, timeRead);
+    case LED_OFF_NOT_TALKING: //  do nothing
 
-  Serial.print( "in case 1...");
-        break;
+// did figure start talking
+      if (photoVal > figArray[i].getTALKING_MIN())
+      {
+        LEDobj.setFigLEDtoIllum(figArray[i].getFigNum(),
+                                figArray[i].getFigColorRed(),
+                                figArray[i].getFigColorGreen(),
+                                figArray[i].getFigColorBlue(),
+                                figArray[i].getFigColorWhite());
+       
+       figArray[i].setLastKnowntalkTime(timeRead);
+       figArray[i].setFigState(LED_ON_TALKING);
+      }
+
+      Serial.print("in case 1...");
+      break;
+
+    case LED_ON_TALKING: //  Figure talking
+   if (photoVal > figArray[i].getTALKING_MIN())
+      { figArray[i].setLastKnowntalkTime(timeRead); 
+      }
+      else
+      {  figArray[i].setFigState(LED_KEEP_ON);      
+      }
+      
+      Serial.print("in case 2...");
+      break;
+
+    case LED_KEEP_ON: //  Figure stay lit for a bit after stop talking
+    if (photoVal > figArray[i].getTALKING_MIN())
+    { figArray[i].setLastKnowntalkTime(timeRead); 
+      figArray[i].setFigState(LED_ON_TALKING);
+    }
+    else if (timeRead -  figArray[i].getLastKnowntalkTime() > delayLEDon )
+       {  figArray[i].setFigState(LED_DIMMING);      
+    }
+    
+    Serial.print("in case 3...");
+
+
+
+
+
+      break;   
+      
+      case LED_DIMMING: //  Figure stopped talking, led dimming
+      if (photoVal > figArray[i].getTALKING_MIN())
+      { figArray[i].setLastKnowntalkTime(timeRead); 
+        figArray[i].setFigState(LED_ON_TALKING);
+      }
+
+      Serial.print("in case 3...");
+      break;
 
 
     }
-
-
-
-
-
   }
-
-
-
-
-
-
 
   Serial.println("in long delay...");
   delay(90000);
@@ -207,7 +240,6 @@ void loop()
 
 } // end loop
 
-
 // todo  change to bit banging / dont need to now
 
 // check if figure started talking and set variables and LEDs
@@ -215,11 +247,10 @@ void loop()
 // {
 //   if (inPhotoVal > TALKING_MIN[inChannel]) // If figure started talking, turn on the color and note the time
 //  {
-    // lastKnownTalkingTime[inChannel] = inTimeRead;
-    // ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1],
-    //                              FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]),
-    //                              inChannel * LED_IN_GROUP, LED_IN_GROUP);
-    // ledStrip.show(); //
-    //  figState[inChannel] = LED_ON_TALKING; // now talking
- // }
-
+// lastKnownTalkingTime[inChannel] = inTimeRead;
+// ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1],
+//                              FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]),
+//                              inChannel * LED_IN_GROUP, LED_IN_GROUP);
+// ledStrip.show(); //
+//  figState[inChannel] = LED_ON_TALKING; // now talking
+// }

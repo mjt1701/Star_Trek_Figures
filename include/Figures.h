@@ -37,7 +37,7 @@ Figures(int m_figNum, int TALKING_MIN,
           int m_red, int m_green, int m_blue, int m_white,
           int m_mux0, int m_mux1, int m_mux2);
 
-  void didFigureStartTalking(int figureNumber);
+  // bool didFigureStartTalking( int m_photoval);
 
   int getFigNum();
   int getFigColorRed();
@@ -53,6 +53,13 @@ Figures(int m_figNum, int TALKING_MIN,
   int getFigMux2();
 
   figStates getFigState();
+  void setFigState(figStates m_figState);
+
+  int getTALKING_MIN();
+void setLastKnowntalkTime(  unsigned long m_lastTime);
+unsigned long getLastKnowntalkTime();
+
+
 };
 
 #endif // FIGURES_H

@@ -17,11 +17,16 @@ Figures::Figures(int m_figNum, int m_min,
       MMUX1(m_mux1),
       MMUX2(m_mux2) {};
 
-void Figures::didFigureStartTalking(int figureNumber)
-{
-        // stuff
-        Serial.println("fig started talking...");
-}
+// bool Figures::didFigureStartTalking(int m_photoval)
+// {
+// if(m_photoval>TALKING_MIN){
+
+//         Serial.println("fig started talking...");
+
+//  return true;
+// }
+// return false;
+// }
 
 int Figures::getFigNum() { return figureNumber; }
 int Figures::getFigColorRed() { return FIGURE_RED_VALUE; }
@@ -37,3 +42,12 @@ int Figures::getFigMux1() { return MMUX1; }
 int Figures::getFigMux2() { return MMUX2; }
 
 figStates Figures::getFigState() { return figState; }
+void Figures::setFigState(figStates m_figState){Figures::figState=m_figState;}
+
+int Figures::getTALKING_MIN() {return TALKING_MIN; }
+
+void Figures::setLastKnowntalkTime(  unsigned long m_lastTime){ Figures::lastKnownTalkingTime; }
+unsigned long Figures::getLastKnowntalkTime(){return lastKnownTalkingTime;}
+
+
+
