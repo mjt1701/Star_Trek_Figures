@@ -3,8 +3,6 @@
 
 #include <Arduino.h>
 
-
-
 enum figStates
 {
   LED_OFF_NOT_TALKING, //  Setup any initial conditions first time thru
@@ -20,12 +18,12 @@ private:
   const int figureNumber;
 
   const int TALKING_MIN;
+  //  todo refactor colors so that all of one color are the same
   const int FIGURE_RED_VALUE;
   const int FIGURE_GREEN_VALUE;
   const int FIGURE_BLUE_VALUE;
   const int FIGURE_WHITE_VALUE;
   int figureBrightness;
-  // todo mux channel, or does it in photores?? no
   figStates figState;
   unsigned long lastKnownTalkingTime;
   unsigned long dimmingStartTime;
@@ -34,10 +32,10 @@ private:
   const int MMUX1;
   const int MMUX2;
 
-public:
-  Figures(int m_figNum, int TALKING_MIN,
+public:  
+Figures(int m_figNum, int TALKING_MIN,
           int m_red, int m_green, int m_blue, int m_white,
-           int  m_mux0,  int m_mux1,   int m_mux2 );
+          int m_mux0, int m_mux1, int m_mux2);
 
   void didFigureStartTalking(int figureNumber);
 

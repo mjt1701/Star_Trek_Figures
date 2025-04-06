@@ -14,6 +14,7 @@ private:
     Adafruit_NeoPixel LEDStrip; // NeoPixel object that controls the strip
 
 public:
+//  todo  does constructor need inputs??
     LEDControl(int LED_PIN, int LED_NUM_TOTAL);  //Constructor
 
     void begin();
@@ -23,8 +24,7 @@ public:
     void turnFigOn(int figNum);
     void show();
 
-    void setFigLEDtoIllum();
-    void setFigLEDtoIllum2(int m_figNum,int m_red,int m_green,int m_blue,int m_white);
+    void setFigLEDtoIllum(int m_figNum,int m_red,int m_green,int m_blue,int m_white);
 
 
 };

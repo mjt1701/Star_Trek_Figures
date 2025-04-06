@@ -7,72 +7,27 @@
 #include "PhotoresistorControl.h"
 #include "Figures.h"
 
+//TODO CLEAN UP GLOBAL CONSTANTS into config.h
+//  look at ledcontrol especially
 const int LED_PIN = 2;
 const int LED_IN_GROUP = 8;
-const int NUMBER_OF_FIGS = 7;
+const int NUMBER_OF_FIGS = 8;
 const int LED_NUM_TOTAL = NUMBER_OF_FIGS * LED_IN_GROUP;
 
-// Talking Range (Minimum)
-const int TALKING_MIN[7] = {
-    100,  // Fig 0 Talking Photo Min
-    170,  // Fig 1 Talking Photo Min
-    170,  // Fig 2 Talking Photo Min
-    135,  // Fig 3 Talking Photo Min
-    110,  // Fig 4 Talking Photo Min
-    100,  // Fig 5 Talking Photo Min
-    200}; // Fig 6 Talking Photo Min
-
-// enum figStates
-// {
-//   LED_OFF_NOT_TALKING,     //  Setup any initial conditions first time thru
-//   LED_ON_TALKING,      //  Figure started talking
-//   LED_KEEP_ON,        //  Figure stay lit for a bit after stop talking
-//   LED_DIMMING         //  Figure stopped talking, led dimming
-//                         //  all Figures not taking long enough that prettly lights start ; maybe will need additianal states for tbat
-// };
-
-// //  int figState[] = {0, 0, 0, 0, 0, 0, 0};
-// enum figStates figState[7];
-
-// color palette for each fig cell
-const int FIGURE_COLOR[7][4] = {
-    {0, 0, 122, 122}, // Figure 0 blue
-    {76, 46, 0, 122}, // Figure 1 gold
-    {122, 0, 0, 122}, // Figure 2 red
-    {122, 0, 0, 122}, // Figure 3 red
-    {122, 0, 0, 122}, // Figure 4 red
-    {0, 0, 122, 122}, // Figure 5 blue
-    {76, 46, 0, 122}  // Figure 6 gold
-};
-
+//  todo needed???
 // factor to reduce brightness each loop when dimming
 const int reduceFactor = 20; // in percentage  // ? not needed
 
-// Create instance of NeoPixel class
-// Parameter 1 = number of pixels in leds
-// Parameter 2 = Arduino pin number (most are valid)
-// Parameter 3 = pixel type flags, add together as needed:
-//   NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
-//   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
-//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
-//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
-//   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-//  Adafruit_NeoPixel ledStrip = Adafruit_NeoPixel(LED_NUM_TOTAL, LED_PIN, NEO_GRBW + NEO_KHZ800);
 
-// const unsigned long timeStart = micros(); // ? not needed
-// const unsigned long delayLEDon = 4000; // delay LED on from when Fig stopped talking
-unsigned long delayLEDon = 1300; // time that led stays on after figure stops talking
-unsigned long lastKnownTalkingTime[7];
+ // delay LED on from when Fig stopped talking
+unsigned long delayLEDon = 1300; 
+//  unsigned long lastKnownTalkingTime[7];
 
 const int dimmingSteps = 70;     // Number of steps for dimming
 const int dimmingDuration = 550; // Total time for dimming in milliseconds
 
 unsigned long dimmingStartTime[7];
 int dimmingStep[7];
-
-// put function declarations here:
-// int readMux(int channel);
-void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead);
 
 void setup()
 {
@@ -83,59 +38,21 @@ void setup()
   // Initialize the LEDs
   LEDControl LEDobj(LED_PIN, LED_NUM_TOTAL);
   LEDobj.begin();
-  delay(50); // ?  Needed?  not in chatgpt code
+  delay(50); 
 
   // simple LED flash to indicated start up
   LEDobj.LEDsAllOff();
   LEDobj.LEDsAllOn(); // todo chanhe to flash
-  delay(750);
+  delay(2000);
   LEDobj.LEDsAllOff();
 
   Serial.println("after startup flash...");
 
-  // Initialize the
+  // Initialize the photoresistor reader
   PhotoresistorControl PhotoResObj;
   PhotoResObj.setPinMode();
 
-  // Serial.println(PhotoResObj.)
-
-  Serial.println("after photoread object.");
-
-  // Figures Spock(0, 100, 0, 0, 122, 122);
-  // Serial.println("after Spock created...");
-  // Serial.print("Fig num: ");
-  // Serial.println(Spock.getFigNum());
-
-  // Figures Chekov(1, 170, 76, 46, 0, 122);
-  // Serial.println("after Chekov created...");
-  // Serial.print("Fig num: ");
-  // Serial.println(Chekov.getFigNum());
-
-  // LEDobj.setFigLEDtoIllum2(Spock.getFigNum(),
-  //                          Spock.getFigColorRed(), Spock.getFigColorGreen(),
-  //                          Spock.getFigColorBlue(), Spock.getFigColorWhite());
-
-  // Serial.println("after Spock illum...");
-
-  // LEDobj.setFigLEDtoIllum2(Chekov.getFigNum(),
-  //                          Chekov.getFigColorRed(), Chekov.getFigColorGreen(),
-  //                          Chekov.getFigColorBlue(), Chekov.getFigColorWhite());
-
-  // Serial.println("after Chekov illum...");
-
-  // MyClass objects[] = {MyClass(10), MyClass(20), MyClass(30)};
-
-  //     {0, 0, 0}, // channel 0
-  //     {1, 0, 0}, // channel 1
-  //     {0, 1, 0}, // channel 2
-  //     {1, 1, 0}, // channel 3
-  //     {0, 0, 1}, // channel 4
-  //     {1, 0, 1}, // channel 5
-  //     {0, 1, 1}, // channel 6
-  //     {1, 1, 1}, // channel 7
-
-
-// figNum,figThres,R,G,B,W,mux0,mux1,mux2
+  // figNum,figThres,R,G,B,W,mux0,mux1,mux2
   Figures figArray[] = {
       Figures(0, 100, 0, 0, 122, 122, 0, 0, 0),
       Figures(1, 170, 76, 46, 0, 122, 1, 0, 0),
@@ -147,21 +64,12 @@ void setup()
 
   Serial.println("array with 7 objects has been created.");
 
-  for (int i; i < NUMBER_OF_FIGS; i++)
+
+  //  ------   TEST FOR LOOP---------
+
+
+  for (int i; i <   NUMBER_OF_FIGS; i++)
   {
-
-    // int photoVal =  PhotoResObj.readLightLevel(0,0,0,)  ;
-    unsigned long timeRead = millis();
-
-    // Serial.print("Fig num: ");
-    // Serial.println(Chekov.getFigNum());
-    Serial.print("Fig num: ");
-    Serial.print(figArray[i].getFigNum());
-    Serial.print(", red: ");
-    Serial.print(figArray[i].getFigColorRed());
-    Serial.print(", mux0: ");
-    Serial.println(figArray[i].getFigMux0());
-
       // Read the photoresistor for this figure
       int photoVal = PhotoResObj.readLightLevel(
                      figArray[i].getFigMux0(),
@@ -171,7 +79,11 @@ Serial.println(photoVal);
        photoVal = PhotoResObj.readLL( figArray[i]);         
        Serial.println(photoVal);
 
+    // int photoVal =  PhotoResObj.readLightLevel(0,0,0,)  ;
+    unsigned long timeRead = millis();
       Serial.println(timeRead);
+  
+      
     switch (figArray[i].getFigState())
     {
       case LED_OFF_NOT_TALKING:
@@ -295,37 +207,19 @@ void loop()
 
 } // end loop
 
-// read the photoresistor for a
-// int readMux(int channel)
-
-// int controlPin[] = {S0, S1, S2};
-
-//?  can this be made global so that it does not have to be created every time thru loop
-//?  is it really created every time thru??
-// todo make it static const  ;;  MAKE it part of the figure object
-// const int muxChannel[8][3] = {
-//     {0, 0, 0}, // channel 0
-//     {1, 0, 0}, // channel 1
-//     {0, 1, 0}, // channel 2
-//     {1, 1, 0}, // channel 3
-//     {0, 0, 1}, // channel 4
-//     {1, 0, 1}, // channel 5
-//     {0, 1, 1}, // channel 6
-//     {1, 1, 1}, // channel 7
-// };
 
 // todo  change to bit banging / dont need to now
 
 // check if figure started talking and set variables and LEDs
-void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)
-{
-  if (inPhotoVal > TALKING_MIN[inChannel]) // If figure started talking, turn on the color and note the time
-  {
+// void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)
+// {
+//   if (inPhotoVal > TALKING_MIN[inChannel]) // If figure started talking, turn on the color and note the time
+//  {
     // lastKnownTalkingTime[inChannel] = inTimeRead;
     // ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1],
     //                              FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]),
     //                              inChannel * LED_IN_GROUP, LED_IN_GROUP);
     // ledStrip.show(); //
     //  figState[inChannel] = LED_ON_TALKING; // now talking
-  }
-}
+ // }
+

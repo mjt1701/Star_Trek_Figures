@@ -9,26 +9,15 @@ LEDControl::LEDControl(int pin, int numPixels)
 void LEDControl::begin()
 {
     LEDStrip.begin();
-    Serial.println("LEDControl::begin.");
 }
 
-void LEDControl::turnFigOn(int figNum)
+void LEDControl::turnFigOn(int figNum)  //??? what is goal of this method?
 {
-    LEDStrip.fill(LEDStrip.Color(0, 0, 122, 122),
+    LEDStrip.fill(LEDStrip.Color(0, 0, 122, 122),  //??? s it figure based or ALL leds
                   figNum * LED_IN_GROUP, LED_IN_GROUP);
     LEDStrip.show();
-
-    Serial.println("led on.");
 }
 
-/*
-this will need to grab the color of the selected ifgure
-    void LEDControl::setColor(const std::string& newColor) {
-    color = newColor;
-    Serial.print("LED color set to: ") ;
-    Serial.println("pput some variable here");
-}
-*/
 // ? not used???
 void LEDControl::show()
 {
@@ -75,17 +64,7 @@ void LEDControl::LEDsAllOn()
     Serial.println("All LEDs On.");
 }
 
-// void LEDControl::setFigLEDtoIllum()
-// {
-//     // lastKnownTalkingTime[inChannel] = inTimeRead;
-//     int m_red = 0;
-//     m_red = Figures::getFigColorRed();
-
-//     LEDStrip.fill(LEDStrip.Color(100, 123, 124, 255), 0 * LED_IN_GROUP, LED_IN_GROUP);
-//     LEDStrip.show();
-// }
-
-void LEDControl::setFigLEDtoIllum2(
+void LEDControl::setFigLEDtoIllum(
     int m_figNum, int m_red, int m_green, int m_blue, int m_white)
 {
     LEDStrip.fill(LEDStrip.Color(m_red, m_green, m_blue, m_white),

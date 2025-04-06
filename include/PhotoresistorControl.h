@@ -17,7 +17,7 @@ private:
 
 public:
     PhotoresistorControl( );
-
+//  todo  change to sending fig num and getting mux from figure
     int readLightLevel(int m_0, int m_1, int m_2);
     int readLL(Figures &m_figObj);
     void setPinMode();
