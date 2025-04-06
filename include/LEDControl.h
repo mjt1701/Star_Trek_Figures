@@ -25,8 +25,6 @@ public:
     void show();
 
     void setFigIllum(int m_figNum,int m_red,int m_green,int m_blue,int m_white);
-
-
 };
 
 #endif // LEDCONTROL_H

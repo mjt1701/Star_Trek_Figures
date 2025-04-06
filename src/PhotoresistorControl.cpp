@@ -27,6 +27,7 @@ int PhotoresistorControl::readLightLevel(int m_mux0, int m_mux1, int m_mux2)
 
 int PhotoresistorControl::readLL(Figures &m_figObj)
 {
+// todo  change to bit banging / dont need to now but still can do
 
     digitalWrite(S0, m_figObj.getFigMux0());
     digitalWrite(S1, m_figObj.getFigMux1());

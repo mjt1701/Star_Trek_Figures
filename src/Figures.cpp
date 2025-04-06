@@ -51,7 +51,7 @@ int Figures::getTALKING_MIN() { return TALKING_MIN; }
 
 void Figures::setLastKnowntalkTime(unsigned long m_lastTime)
 {
-        Figures::lastKnownTalkingTime;
+        Figures::lastKnownTalkingTime = m_lastTime ;
 }
 unsigned long Figures::getLastKnowntalkTime()
 {
@@ -69,7 +69,7 @@ int Figures::getDimmingStep()
 
 void Figures::setDimStartTime(unsigned long m_dimTime)
 {
-        Figures::dimmingStartTime = m_dimTime;
+        dimmingStartTime = m_dimTime;
 }
 unsigned long Figures::getDimStartTime()
 {

@@ -8,25 +8,15 @@
 #include "Figures.h"
 
 // TODO CLEAN UP GLOBAL CONSTANTS into config.h
-//   look at ledcontrol especially
+// todo dupe varialbe in ledcontrol 
 const int LED_PIN = 2;
 const int LED_IN_GROUP = 8;
-const int NUMBER_OF_FIGS = 8;
+const int NUMBER_OF_FIGS = 7;
 const int LED_NUM_TOTAL = NUMBER_OF_FIGS * LED_IN_GROUP;
 
-//  todo needed???
-// factor to reduce brightness each loop when dimming
-const int reduceFactor = 20; // in percentage  // ? not needed
-
-// delay LED on from when Fig stopped talking
-unsigned long delayLEDon = 1300;
-//  unsigned long lastKnownTalkingTime[7];
-
+unsigned long delayLEDon = 1300;  // delay LED on from when Fig stopped talking
 const int dimmingSteps = 70;     // Number of steps for dimming
 const int dimmingDuration = 550; // Total time for dimming in milliseconds
-
-unsigned long dimmingStartTime[7];
-int dimmingStep[7];
 
 void setup()
 {
@@ -41,8 +31,8 @@ void setup()
 
   // simple LED flash to indicated start up
   LEDobj.LEDsAllOff();
-  LEDobj.LEDsAllOn(); // todo chanhe to flash
-  delay(2000);
+  LEDobj.LEDsAllOn(); 
+  delay(2000);// todo modify
   LEDobj.LEDsAllOff();
 
   Serial.println("after startup flash...");
@@ -264,17 +254,4 @@ void loop()
 
 } // end loop
 
-// todo  change to bit banging / dont need to now
 
-// check if figure started talking and set variables and LEDs
-// void isFigureNowTalking(int inChannel, int inPhotoVal, unsigned long inTimeRead)
-// {
-//   if (inPhotoVal > TALKING_MIN[inChannel]) // If figure started talking, turn on the color and note the time
-//  {
-// lastKnownTalkingTime[inChannel] = inTimeRead;
-// ledStrip.fill(ledStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1],
-//                              FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]),
-//                              inChannel * LED_IN_GROUP, LED_IN_GROUP);
-// ledStrip.show(); //
-//  figState[inChannel] = LED_ON_TALKING; // now talking
-// }
