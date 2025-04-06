@@ -33,3 +33,5 @@ int Figures::getFigBrightness() { return figureBrightness; }
 int Figures::getFigMux0() {return MMUX0; }
 int Figures::getFigMux1() {return MMUX1; }
 int Figures::getFigMux2() {return MMUX2; }
+
+figStates Figures::getFigState() {return figState;}

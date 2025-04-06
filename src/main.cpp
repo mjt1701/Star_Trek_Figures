@@ -161,7 +161,39 @@ void setup()
     Serial.print(figArray[i].getFigColorRed());
     Serial.print(", mux0: ");
     Serial.println(figArray[i].getFigMux0());
+
+      // Read the photoresistor for this figure
+      int photoVal = PhotoResObj.readLightLevel(
+                     figArray[i].getFigMux0(),
+               figArray[i].getFigMux1(),
+               figArray[i].getFigMux2()   );
+Serial.println(photoVal);
+       photoVal = PhotoResObj.readLL( figArray[i]);         
+       Serial.println(photoVal);
+
+      Serial.println(timeRead);
+    switch (figArray[i].getFigState())
+    {
+      case LED_OFF_NOT_TALKING:
+  //    isFigureNowTalking( i, photoVal, timeRead);
+
+  Serial.print( "in case 1...");
+        break;
+
+
+    }
+
+
+
+
+
   }
+
+
+
+
+
+
 
   Serial.println("in long delay...");
   delay(90000);

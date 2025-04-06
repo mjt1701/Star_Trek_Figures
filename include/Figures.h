@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+
+
 enum figStates
 {
   LED_OFF_NOT_TALKING, //  Setup any initial conditions first time thru
@@ -16,9 +18,7 @@ class Figures
 {
 private:
   const int figureNumber;
-  const int MMUX0;
-  const int MMUX1;
-  const int MMUX2;
+
   const int TALKING_MIN;
   const int FIGURE_RED_VALUE;
   const int FIGURE_GREEN_VALUE;
@@ -30,6 +30,9 @@ private:
   unsigned long lastKnownTalkingTime;
   unsigned long dimmingStartTime;
   int dimmingStep;
+  const int MMUX0;
+  const int MMUX1;
+  const int MMUX2;
 
 public:
   Figures(int m_figNum, int TALKING_MIN,
@@ -50,6 +53,8 @@ public:
   int getFigMux0();
   int getFigMux1();
   int getFigMux2();
+
+  figStates getFigState();
 };
 
 #endif // FIGURES_H

@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#include "Figures.h"
+
 class PhotoresistorControl {
 private:
     // Mux control pins for reading photoresistors
@@ -16,7 +18,8 @@ private:
 public:
     PhotoresistorControl( );
 
-    int readLightLevel(int m_mux0, int m_mux1, int m_mux2 );
+    int readLightLevel(int m_0, int m_1, int m_2);
+    int readLL(Figures &m_figObj);
     void setPinMode();
 // void setFigToRead(int figNum);
 };
