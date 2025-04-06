@@ -24,7 +24,7 @@ public:
     void turnFigOn(int figNum);
     void show();
 
-    void setFigLEDtoIllum(int m_figNum,int m_red,int m_green,int m_blue,int m_white);
+    void setFigIllum(int m_figNum,int m_red,int m_green,int m_blue,int m_white);
 
 
 };

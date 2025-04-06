@@ -42,12 +42,39 @@ int Figures::getFigMux1() { return MMUX1; }
 int Figures::getFigMux2() { return MMUX2; }
 
 figStates Figures::getFigState() { return figState; }
-void Figures::setFigState(figStates m_figState){Figures::figState=m_figState;}
+void Figures::setFigState(figStates m_figState)
+{
+        Figures::figState = m_figState;
+}
 
-int Figures::getTALKING_MIN() {return TALKING_MIN; }
+int Figures::getTALKING_MIN() { return TALKING_MIN; }
 
-void Figures::setLastKnowntalkTime(  unsigned long m_lastTime){ Figures::lastKnownTalkingTime; }
-unsigned long Figures::getLastKnowntalkTime(){return lastKnownTalkingTime;}
+void Figures::setLastKnowntalkTime(unsigned long m_lastTime)
+{
+        Figures::lastKnownTalkingTime;
+}
+unsigned long Figures::getLastKnowntalkTime()
+{
+        return lastKnownTalkingTime;
+}
 
+void Figures::setDimmingStep(int m_dimStep)
+{
+        Figures::dimmingStep = m_dimStep;
+}
+int Figures::getDimmingStep()
+{
+        return dimmingStep;
+}
 
+void Figures::setDimStartTime(unsigned long m_dimTime)
+{
+        Figures::dimmingStartTime = m_dimTime;
+}
+unsigned long Figures::getDimStartTime()
+{
+        return dimmingStartTime;
+}
+
+void Figures::incDimmingStep() {dimmingStep++;}
 

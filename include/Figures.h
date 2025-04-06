@@ -56,9 +56,16 @@ Figures(int m_figNum, int TALKING_MIN,
   void setFigState(figStates m_figState);
 
   int getTALKING_MIN();
-void setLastKnowntalkTime(  unsigned long m_lastTime);
 unsigned long getLastKnowntalkTime();
+void setLastKnowntalkTime(  unsigned long m_lastTime);
 
+int getDimmingStep();
+void setDimmingStep(int m_dimStep);
+
+unsigned long getDimStartTime();
+void setDimStartTime(unsigned long m_dimStart);
+
+void incDimmingStep();
 
 };
 

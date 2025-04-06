@@ -64,7 +64,7 @@ void LEDControl::LEDsAllOn()
     Serial.println("All LEDs On.");
 }
 //todo do with only the fignum coming thru
-void LEDControl::setFigLEDtoIllum(
+void LEDControl::setFigIllum(
     int m_figNum, int m_red, int m_green, int m_blue, int m_white)
 {
     LEDStrip.fill(LEDStrip.Color(m_red, m_green, m_blue, m_white),

@@ -83,60 +83,84 @@ void setup()
     {
     case LED_OFF_NOT_TALKING: //  do nothing
 
-// did figure start talking
+      // did figure start talking
       if (photoVal > figArray[i].getTALKING_MIN())
       {
-        LEDobj.setFigLEDtoIllum(figArray[i].getFigNum(),
-                                figArray[i].getFigColorRed(),
-                                figArray[i].getFigColorGreen(),
-                                figArray[i].getFigColorBlue(),
-                                figArray[i].getFigColorWhite());
-       
-       figArray[i].setLastKnowntalkTime(timeRead);
-       figArray[i].setFigState(LED_ON_TALKING);
+        LEDobj.setFigIllum(figArray[i].getFigNum(),
+                           figArray[i].getFigColorRed(),
+                           figArray[i].getFigColorGreen(),
+                           figArray[i].getFigColorBlue(),
+                           figArray[i].getFigColorWhite());
+
+        figArray[i].setLastKnowntalkTime(timeRead);
+        figArray[i].setFigState(LED_ON_TALKING);
       }
 
       Serial.print("in case 1...");
       break;
 
     case LED_ON_TALKING: //  Figure talking
-   if (photoVal > figArray[i].getTALKING_MIN())
-      { figArray[i].setLastKnowntalkTime(timeRead); 
+      if (photoVal > figArray[i].getTALKING_MIN())
+      {
+        figArray[i].setLastKnowntalkTime(timeRead);
       }
       else
-      {  figArray[i].setFigState(LED_KEEP_ON);      
+      {
+        figArray[i].setFigState(LED_KEEP_ON);
       }
-      
+
       Serial.print("in case 2...");
       break;
 
     case LED_KEEP_ON: //  Figure stay lit for a bit after stop talking
-    if (photoVal > figArray[i].getTALKING_MIN())
-    { figArray[i].setLastKnowntalkTime(timeRead); 
-      figArray[i].setFigState(LED_ON_TALKING);
-    }
-    else if (timeRead -  figArray[i].getLastKnowntalkTime() > delayLEDon )
-       {  figArray[i].setFigState(LED_DIMMING);      
-    }
-    
-    Serial.print("in case 3...");
-
-
-
-
-
-      break;   
-      
-      case LED_DIMMING: //  Figure stopped talking, led dimming
       if (photoVal > figArray[i].getTALKING_MIN())
-      { figArray[i].setLastKnowntalkTime(timeRead); 
+      {
+        figArray[i].setLastKnowntalkTime(timeRead);
         figArray[i].setFigState(LED_ON_TALKING);
+      }
+      else if (timeRead - figArray[i].getLastKnowntalkTime() > delayLEDon)
+      {
+        // Dimming
+        figArray[i].setFigState(LED_DIMMING);
+        figArray[i].setDimmingStep(0);
+        figArray[i].setDimStartTime(timeRead);
       }
 
       Serial.print("in case 3...");
+
       break;
 
+    case LED_DIMMING:                              //  Figure stopped talking, led dimming
+      if (photoVal > figArray[i].getTALKING_MIN()) // check to if fig started talking
+      {
+        figArray[i].setLastKnowntalkTime(timeRead);
+        figArray[i].setFigState(LED_ON_TALKING);
+      }
+      else if (figArray[i].getDimmingStep() < dimmingSteps)
+      {
+        int brightness = 255 * (dimmingSteps - figArray[i].getDimmingStep()) / dimmingSteps;
+        LEDobj.setFigIllum(figArray[i].getFigNum(),
+                           figArray[i].getFigColorRed() * brightness / 255,
+                           figArray[i].getFigColorGreen() * brightness / 255,
+                           figArray[i].getFigColorBlue() * brightness / 255,
+                           figArray[i].getFigColorWhite() * brightness / 255);
+      }
 
+      else if (timeRead - figArray[i].getDimStartTime() > (dimmingDuration / dimmingSteps))
+      {
+        figArray[i].incDimmingStep();
+        figArray[i].setDimStartTime(timeRead);
+      }
+
+      else
+
+      {
+        LEDobj.setFigIllum(figArray[i].getFigNum(), 0, 0, 0, 0);
+        figArray[i].setFigState(LED_OFF_NOT_TALKING);
+      }
+
+      Serial.print("in case 4...");
+      break;
     }
   }
 
