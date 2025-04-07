@@ -17,17 +17,6 @@ Figures::Figures(int m_figNum, int m_min,
       MMUX1(m_mux1),
       MMUX2(m_mux2) {};
 
-// bool Figures::didFigureStartTalking(int m_photoval)
-// {
-// if(m_photoval>TALKING_MIN){
-
-//         Serial.println("fig started talking...");
-
-//  return true;
-// }
-// return false;
-// }
-
 int Figures::getFigNum() { return figureNumber; }
 int Figures::getFigColorRed() { return FIGURE_RED_VALUE; }
 int Figures::getFigColorGreen() { return FIGURE_GREEN_VALUE; }

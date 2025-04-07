@@ -60,21 +60,11 @@ void loop()
 {
   Serial.println(" START LOOP ");
 
-  for (int i=0; i < 7; i++)
+  for (int i=0; i < NUMBER_OF_FIGS; i++)
 
- // for (int i=0; i < NUMBER_OF_FIGS; i++)
   {
-//    Serial.println(" START FOR[i]: ");
 
-    // Read the photoresistor for this figure
-//int photoVal = PhotoResObj.readLightLevel(
-        // figArray[i].getFigMux0(),
-        // figArray[i].getFigMux1(),
-        // figArray[i].getFigMux2());
-
-
-    // Serial.println(photoVal);
- int   photoVal = PhotoResObj.readLL(figArray[i]);
+ int   photoVal = PhotoResObj.readLightLevel(figArray[i]);
 
     Serial.print(" Figure: ");
     Serial.print(figArray[i].getFigNum() );
@@ -83,10 +73,7 @@ void loop()
 
     unsigned long timeRead = millis();
 
-    // SETUP FOR TESTING THE CASES
-    //    figArray[i].setFigState(LED_OFF_NOT_TALKING);
-
-    switch (figArray[i].getFigState())
+        switch (figArray[i].getFigState())
     {
     case LED_OFF_NOT_TALKING: //  do nothing
       Serial.print(" -start case 0 ");
@@ -106,8 +93,6 @@ void loop()
 
       Serial.print("-exit case 0 state:");
       Serial.println(figArray[i].getFigState());
-
-      // delay(3000);
 
       break;
 
@@ -190,102 +175,8 @@ void loop()
       Serial.println(figArray[i].getFigState());
       break;
     }
- //   Serial.println("end of for[i]...");
-
- 
   }
 
   Serial.println("end of loop...");
-//   delay(90000);
 }
 
-/*
-
-
-  // Loop through each figure
-  for (int i = 0; i < NUMBER_OF_FIGS; i++)
-  {
-    // Read the photoresistor for this figure
-    int photoVal = readMux(i);
-    unsigned long timeRead = millis();
-
-    switch (figState[i])
-    {
-    case LED_OFF_NOT_TALKING:
-    isFigureNowTalking( i, photoVal, timeRead);
-      break;
-
-    case LED_ON_TALKING: //  On,  talking
-
-      if (photoVal > TALKING_MIN[i]) //  is figure is still talking
-      {
-        lastKnownTalkingTime[i] = timeRead;
-      }
-
-      else //  figure has stopped talking (LED still on)
-      {
-        figState[i] = LED_KEEP_ON;
-      }
-      break;
-
-    case LED_KEEP_ON: //  On, stopped talking, so that ligiht is not choppy when cont talking
-// todo need to see if figure started talking again
-isFigureNowTalking( i, photoVal, timeRead);
-
-      if (timeRead - lastKnownTalkingTime[i] < delayLEDon)
-      {
-        // Still in the delay period, do nothing
-      }
-      else
-      {
-        figState[i] = LED_DIMMING;
-        dimmingStep[i] = 0;             // Reset dimming step
-        dimmingStartTime[i] = timeRead; // Start dimming
-      }
-
-    case LED_DIMMING: //  On, not talking  , dimming
-isFigureNowTalking( i, photoVal, timeRead);
-
-      if (timeRead - lastKnownTalkingTime[i] < delayLEDon)   // todo  is this needed??? taken care of just above??
-      {
-        // Still in the delay period, do nothing
-      }
-      else
-      {
-        // Start dimming process
-        if (dimmingStep[i] < dimmingSteps)
-        {
-          // Calculate the brightness based on the current dimming step
-          int brightness = 255 * (dimmingSteps - dimmingStep[i]) / dimmingSteps;
-          ledStrip.fill(ledStrip.Color(
-                            FIGURE_COLOR[i][0] * brightness / 255,
-                            FIGURE_COLOR[i][1] * brightness / 255,
-                            FIGURE_COLOR[i][2] * brightness / 255,
-                            FIGURE_COLOR[i][3] * brightness / 255),
-                            i * LED_IN_GROUP, LED_IN_GROUP);
-          ledStrip.show();
-
-          // Check if it's time to move to the next dimming step
-          if (timeRead - dimmingStartTime[i] >= (dimmingDuration / dimmingSteps))
-          {
-            dimmingStep[i]++;
-            dimmingStartTime[i] = timeRead; // Reset the timer for the next step
-          }
-        }
-        else
-        {
-          // Turn off the lights when dimming is complete
-          ledStrip.fill(ledStrip.Color(0, 0, 0, 0), i * LED_IN_GROUP, LED_IN_GROUP);
-          figState[i] = LED_OFF_NOT_TALKING; // Reset to off state
-        }
-      }
-      break;
-
-    default:
-      break;
-    }
-    // end of figure if
-  }
-*/
-
-// end loop

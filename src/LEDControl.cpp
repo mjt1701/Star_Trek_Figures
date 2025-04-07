@@ -18,26 +18,6 @@ void LEDControl::turnFigOn(int figNum)  //??? what is goal of this method?
     LEDStrip.show();
 }
 
-// ? not used???
-void LEDControl::show()
-{
-    LEDStrip.show();
-    Serial.println("LEDControl::show.");
-}
-
-// ? not used???
-void LEDControl::setFigureLED(int m_figruenumberxxx)
-{
-    //  getFigureChannel
-    //  getFigureColor
-    /*
-        LEDStrip.fill(LEDStrip.Color(FIGURE_COLOR[inChannel][0], FIGURE_COLOR[inChannel][1],
-       FIGURE_COLOR[inChannel][2], FIGURE_COLOR[inChannel][3]),
-       inChannel * LED_IN_GROUP, LED_IN_GROUP);
-    */
-}
-
-// Function to set all LEDs off
 void LEDControl::LEDsAllOff()
 {
     // Cycle through all LEDs for figure in loop
@@ -47,10 +27,8 @@ void LEDControl::LEDsAllOff()
         LEDStrip.setPixelColor(i, 0);
     }
     LEDStrip.show();
-    Serial.println("All LEDs Off.");
 }
 
-// Function to set all LEDs on
 void LEDControl::LEDsAllOn()
 {
     // Cycle through all LEDs for figure in loop
@@ -61,7 +39,6 @@ void LEDControl::LEDsAllOn()
         LEDStrip.setPixelColor(i, 125);
     }
     LEDStrip.show();
-    Serial.println("All LEDs On.");
 }
 //todo do with only the fignum coming thru
 void LEDControl::setFigIllum(

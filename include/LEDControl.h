@@ -20,10 +20,7 @@ public:
     void begin();
     void LEDsAllOff();
     void LEDsAllOn();
-    void setFigureLED(int figruenumberxxx);
     void turnFigOn(int figNum);
-    void show();
-
     void setFigIllum(int m_figNum,int m_red,int m_green,int m_blue,int m_white);
 };
 
