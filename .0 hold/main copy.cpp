@@ -160,7 +160,7 @@ isFigureNowTalking( i, photoVal, timeRead);
         // Still in the delay period, do nothing
       }
       else
-      {
+      
         // Start dimming process
         if (dimmingStep[i] < dimmingSteps)
         {
@@ -187,7 +187,7 @@ isFigureNowTalking( i, photoVal, timeRead);
           ledStrip.fill(ledStrip.Color(0, 0, 0, 0), i * LED_IN_GROUP, LED_IN_GROUP);
           figState[i] = LED_OFF_NOT_TALKING; // Reset to off state
         }
-      }
+      
       break;
 
     default:
