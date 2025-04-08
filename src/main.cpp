@@ -24,7 +24,7 @@ LEDControl LEDobj(LED_PIN, LED_NUM_TOTAL);
 // Initialize the photoresistor reader
 PhotoresistorControl PhotoResObj;
 
-// figNum,figThres,R,G,B,W,mux0,mux1,mux2
+// Num,Thres,R,G,B,W,mux0,mux1,mux2
 Figures figArray[] = {
     Figures(0, 100, 0, 0, 122, 122, 0, 0, 0),
     Figures(1, 170, 76, 46, 0, 122, 1, 0, 0),
