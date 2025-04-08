@@ -1,5 +1,6 @@
 #include "LEDControl.h"
 #include "Figures.h"
+#include "config.h"
 
 // Constructor: Initializes the NeoPixel strip with the specified pin and number of pixels
 LEDControl::LEDControl(int pin, int numPixels)
@@ -11,9 +12,9 @@ void LEDControl::begin()
     LEDStrip.begin();
 }
 
-void LEDControl::turnFigOn(int figNum)  //??? what is goal of this method?
+void LEDControl::turnFigOn(int figNum) //??? what is goal of this method?
 {
-    LEDStrip.fill(LEDStrip.Color(0, 0, 122, 122),  //??? s it figure based or ALL leds
+    LEDStrip.fill(LEDStrip.Color(0, 0, 122, 122), //??? s it figure based or ALL leds
                   figNum * LED_IN_GROUP, LED_IN_GROUP);
     LEDStrip.show();
 }
@@ -21,7 +22,7 @@ void LEDControl::turnFigOn(int figNum)  //??? what is goal of this method?
 void LEDControl::LEDsAllOff()
 {
     // Cycle through all LEDs for figure in loop
-    for (int i = 0; i < LEDControl::LED_NUM_TOTAL; i++)
+    for (int i = 0; i < LED_NUM_TOTAL; i++)
     {
         // Set color to zero which is off
         LEDStrip.setPixelColor(i, 0);
@@ -32,7 +33,7 @@ void LEDControl::LEDsAllOff()
 void LEDControl::LEDsAllOn()
 {
     // Cycle through all LEDs for figure in loop
-    for (int i = 0; i < LEDControl::LED_NUM_TOTAL; i++)
+    for (int i = 0; i < LED_NUM_TOTAL; i++)
     {
         // Set color to
         // todo update color variable
@@ -40,7 +41,7 @@ void LEDControl::LEDsAllOn()
     }
     LEDStrip.show();
 }
-//todo do with only the fignum coming thru
+// todo do with only the fignum coming thru
 void LEDControl::setFigIllum(
     int m_figNum, int m_red, int m_green, int m_blue, int m_white)
 {

@@ -5,23 +5,19 @@
 
 #include "Figures.h"
 
-class PhotoresistorControl {
+class PhotoresistorControl
+{
 private:
     // Mux control pins for reading photoresistors
- int S0;
- int S1;
- int S2;
+    int S0, S1, S2;
 
-// Mux in "Z" pin
- int Z_PIN;
+    // Mux in "Z" pin
+    int Z_PIN;
 
 public:
-    PhotoresistorControl( );
-//  todo  change to sending fig num and getting mux from figure
-    int readLightLevel(int m_0, int m_1, int m_2);
+    PhotoresistorControl();
     int readLightLevel(Figures &m_figObj);
     void setPinMode();
-// void setFigToRead(int figNum);
 };
 
 #endif // PHOTORESISTORCONTROL_H
