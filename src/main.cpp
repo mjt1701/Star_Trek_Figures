@@ -14,15 +14,18 @@ LEDControl LEDobj(LED_PIN, LED_NUM_TOTAL);
 // Initialize the photoresistor reader
 PhotoresistorControl PhotoResObj;
 
+unsigned long delayLEDon = 1300; // delay LED on from when Fig stopped talking
+
 // Num,Thres,R,G,B,W,mux0,mux1,mux2
 Figures figArray[] = {
-    Figures(0, 100, 0, 0, 122, 122, 0, 0, 0),
-    Figures(1, 170, 76, 46, 0, 122, 1, 0, 0),
-    Figures(2, 170, 122, 0, 0, 122, 0, 1, 0),
-    Figures(3, 135, 122, 0, 0, 122, 1, 1, 0),
-    Figures(4, 110, 122, 0, 0, 122, 0, 0, 1),
-    Figures(5, 110, 0, 0, 122, 122, 1, 0, 1),
-    Figures(6, 175, 76, 46, 0, 122, 0, 1, 1)};
+    Figures(0, 100, 45, 20, 130, 95, 0, 0, 0),  // Spock
+    Figures(1, 135, 76, 46, 0, 110, 1, 0, 0),   // Checkov
+    Figures(2, 170, 122, 0, 0, 122, 0, 1, 0),   // Sulu
+    Figures(3, 135, 122, 0, 0, 122, 1, 1, 0),   // Scotty
+    Figures(4, 110, 122, 0, 0, 122, 0, 0, 1),   // Uhura
+    Figures(5, 110, 45, 20, 130, 95, 1, 0, 1),  // McCoy
+    Figures(6, 175, 76, 46, 0, 110, 0, 1, 1)};  // Kirk
+    
 
 void setup()
 {
@@ -36,7 +39,7 @@ void setup()
   // simple LED flash to indicated start up
   LEDobj.LEDsAllOff();
   LEDobj.LEDsAllOn();
-  delay(2000); // todo modify
+  delay(1000); // todo modify
   LEDobj.LEDsAllOff();
 
   PhotoResObj.setPinMode();
